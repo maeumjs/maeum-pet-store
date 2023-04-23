@@ -1,0 +1,50 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {},
+    "require": ["tsconfig-paths/register"]
+  },
+  "compilerOptions": {
+    "incremental": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./",
+    "paths": {
+      "#configs/*": ["src/configs/*"],
+      "#dto/*": ["src/dto/*"],
+      "#entity/*": ["src/entity/*"],
+      "#server/*": ["src/server/*"],
+      "#frames/*": ["src/frames/*"],
+      "#handlers/*": ["src/handlers/*"],
+      "#loggers/*": ["src/loggers/*"],
+      "#modules/*": ["src/modules/*"],
+      "#transforms/*": ["src/transforms/*"],
+      "#storages/*": ["src/storages/*"],
+      "#tools/*": ["src/tools/*"]
+    },
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "scripts/**/*.ts"],
+  "exclude": [".eslintrc.cjs", "jest.config.js"]
+}

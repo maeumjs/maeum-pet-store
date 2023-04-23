@@ -1,0 +1,21 @@
+{
+  "watch": [
+    "app.ts",
+    "src/**/**.ts",
+    "resources/configs/**/*.json",
+    "resources/configs/**/*.env",
+    "resources/locales/**/*.json",
+    "!src/dto/**/*.ts"
+  ],
+  "exec": "ts-node -r tsconfig-paths/register -r src/configs/loader --files --project tsconfig.json src/listen.ts",
+  "ext": "ts json env",
+  "ignore": [
+    "*.test.ts"
+  ],
+  "env": {
+    "DEBUG": "maeum:*",
+    "RUN_MODE": "local",
+    "ENV_LOG_LEVEL": "debug",
+    "NODE_ENV": "production"
+  }
+}
