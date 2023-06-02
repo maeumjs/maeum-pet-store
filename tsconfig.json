@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node14/tsconfig.json",
+  "extends": "@tsconfig/node18/tsconfig.json",
   "ts-node": {
     "transpileOnly": true,
     "files": true,
@@ -21,6 +21,8 @@
       "#loggers/*": ["src/loggers/*"],
       "#modules/*": ["src/modules/*"],
       "#transforms/*": ["src/transforms/*"],
+      "#repositories/*": ["src/repositories/*"],
+      "#entities/*": ["src/entities/*"],
       "#storages/*": ["src/storages/*"],
       "#tools/*": ["src/tools/*"]
     },

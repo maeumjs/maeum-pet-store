@@ -109,7 +109,7 @@ function getFormatter(useColor: boolean = false) {
 
 export function bootstrap() {
   const runMode = getRunMode();
-  const level = getLogLevel(process.env.ENV_LOG_LEVEL);
+  const level = getLogLevel(process.env.ENV_APP_LOG_LEVEL);
   const { levels } = winston.config.syslog;
 
   if (runMode === 'local' && !existsSync(path.join(process.cwd(), 'logs'))) {

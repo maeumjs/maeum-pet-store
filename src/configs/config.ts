@@ -42,6 +42,7 @@ export function bootstrap() {
 
     internalConfig.server = readedConfig.server;
     internalConfig.endpoint = readedConfig.endpoint;
+    internalConfig.mysql = readedConfig.mysql;
   } catch (catched) {
     const err = isError(catched) ?? new Error(`unknown error raised from ${__filename}`);
 

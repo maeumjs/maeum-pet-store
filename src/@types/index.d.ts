@@ -5,7 +5,10 @@ declare namespace NodeJS {
     RUN_MODE?: string;
 
     /** ENV_LOG_LEVEL field decide winston log level */
-    ENV_LOG_LEVEL?: string;
+    ENV_APP_LOG_LEVEL?: string;
+
+    /** ENV_DB_LOG_LEVEL field decide TypeORM log level */
+    ENV_DB_LOG_LEVEL?: string;
 
     /** ENV_REPLY_LOGGING field decide reply payload logging or not */
     ENV_PAYLOAD_LOGGING?: 'true' | 'false';

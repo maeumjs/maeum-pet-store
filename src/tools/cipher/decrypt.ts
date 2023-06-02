@@ -1,5 +1,5 @@
+import getKey from '#tools/cipher/getKey';
 import * as crypto from 'crypto';
-import getKey from './getKey';
 
 export default function decrypt(text: string) {
   const textParts = text.split(':');

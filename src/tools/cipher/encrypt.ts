@@ -1,6 +1,6 @@
 import getIv from '#tools/cipher/getIv';
+import getKey from '#tools/cipher/getKey';
 import * as crypto from 'crypto';
-import getKey from './getKey';
 
 export default function encrypt(text: string) {
   const iv = getIv(process.env.ENV_MAEUM_ENCRYPTION_IV);

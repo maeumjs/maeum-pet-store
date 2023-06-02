@@ -4,16 +4,29 @@
   },
   // database connection configuration
   "mysql": {
-    "maeum": {
-      "host": {
-        "io": "localhost",
-        "in": "localhost"
+    "cmsApi": {
+      "replication": {
+        "master": {
+          "host": "localhost",
+          "port": 9901,
+          "database": "cms_api",
+          "username": "",
+          "password": ""
+        },
+        "slaves": [
+          {
+            "host": "localhost",
+            "port": 9901,
+            "database": "cms_api",
+            "username": "",
+            "password": ""
+          }
+        ],
+        "canRetry": true,
+        "selector": "RR"
       },
-      "port": 9301,
-      "db": "maeum_boilerplate",
-      "retry": 3,
-      "pool": 3,
-      "queue": 5
+      "poolSize": 10,
+      "queue": 10
     }
   },
   // application configuration

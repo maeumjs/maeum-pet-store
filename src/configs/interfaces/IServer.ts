@@ -1,4 +1,4 @@
-import { CE_RUN_MODE } from '#configs/interfaces/CE_RUN_MODE';
+import { CE_RUN_MODE } from '#configs/const-enum/CE_RUN_MODE';
 
 /**
  * Maeum Boilerplate Server Application configuration

@@ -2,6 +2,10 @@ import getPort from '#configs/modules/getPort';
 import logging from '#loggers/bootstrap';
 import uncaughtExceptionHandlerBootstrap from '#loggers/module/uncaughtExceptionHandler';
 import { bootstrap as httpBootstrap, unbootstrap as httpUnbootstrap, listen } from '#server/server';
+import {
+  bootstrap as mysqlBootstrap,
+  unbootstrap as mysqlUnbootstrap,
+} from '#storages/mysql/mysql';
 import httpStatusCodes from 'http-status-codes';
 import { isError } from 'my-easy-fp';
 
@@ -10,13 +14,14 @@ const log = logging(__filename);
 export async function bootstrap() {
   uncaughtExceptionHandlerBootstrap();
 
-  // await Promise.all([]);
+  await Promise.all([mysqlBootstrap()]);
 
   const fastify = await httpBootstrap();
   return fastify;
 }
 
 export async function unbootstrap() {
+  await mysqlUnbootstrap();
   await httpUnbootstrap();
 }
 

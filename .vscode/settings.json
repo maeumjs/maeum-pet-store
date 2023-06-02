@@ -29,7 +29,7 @@
   "files.associations": {
     ".fastmakerrc": "jsonc",
     ".nozzlerc": "jsonc",
-    "config.*.json": "jsonc"
+    "resources/configs/config.*.json": "jsonc"
   },
   "files.eol": "\n",
   "eslint.validate": ["typescript", "typescriptreact"],
