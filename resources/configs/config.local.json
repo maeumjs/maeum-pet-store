@@ -4,30 +4,14 @@
   },
   // database connection configuration
   "mysql": {
-    "cmsApi": {
-      "replication": {
-        "master": {
-          "host": "localhost",
-          "port": 9901,
-          "database": "cms_api",
-          "username": "",
-          "password": ""
-        },
-        "slaves": [
-          {
-            "host": "localhost",
-            "port": 9901,
-            "database": "cms_api",
-            "username": "",
-            "password": ""
-          }
-        ],
-        "canRetry": true,
-        "selector": "RR"
-      },
-      "poolSize": 10,
-      "queue": 10
-    }
+    "type": "mysql",
+    "host": "localhost",
+    "port": 9301,
+    "database": "pet_store",
+    "username": "",
+    "password": "",
+    "poolSize": 10,
+    "queue": 10
   },
   // application configuration
   "server": {

@@ -20,9 +20,11 @@
 
   "cli-logo": true,
 
+  "truncate": true,
+
   // ts-json-schema-generator option
   "generatorOption": {
     "additionalProperties": true,
-    "extraTags": ["datetime-formatex", "example"]
+    "extraTags": ["datetime-formatex", "example", "int64"]
   }
 }

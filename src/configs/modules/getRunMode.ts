@@ -1,22 +1,14 @@
-import { CE_RUN_MODE } from '#configs/const-enum/CE_RUN_MODE';
+import { CE_RUN_MODE } from '#/configs/const-enum/CE_RUN_MODE';
 
-/**
- * return validate run-mode
- *
- * @returns CE_RUN_MODE
- */
-export default function getRunMode(envRunMode?: string): CE_RUN_MODE {
-  const runMode = envRunMode ?? process.env.RUN_MODE ?? 'local';
-
-  if (
-    runMode !== 'local' &&
-    runMode !== 'develop' &&
-    runMode !== 'qa' &&
-    runMode !== 'stage' &&
-    runMode !== 'production'
-  ) {
-    throw new Error(`invalid run_mode: ${runMode}`);
+export function getRunMode(envRunMode?: string): CE_RUN_MODE {
+  switch (envRunMode) {
+    case CE_RUN_MODE.LOCAL:
+    case CE_RUN_MODE.DEVELOP:
+    case CE_RUN_MODE.QA:
+    case CE_RUN_MODE.STAGE:
+    case CE_RUN_MODE.PRODUCTION:
+      return envRunMode;
+    default:
+      return CE_RUN_MODE.LOCAL;
   }
-
-  return runMode;
 }

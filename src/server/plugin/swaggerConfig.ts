@@ -1,4 +1,4 @@
-import { FastifyDynamicSwaggerOptions, JSONObject } from '@fastify/swagger';
+import type { FastifyDynamicSwaggerOptions, JSONObject } from '@fastify/swagger';
 
 function getReferenceId(json: JSONObject, index: number): string {
   try {
@@ -13,7 +13,7 @@ function getReferenceId(json: JSONObject, index: number): string {
 }
 
 /** swagger configuration */
-export default function swaggerConfig(): FastifyDynamicSwaggerOptions {
+export function swaggerConfig(): FastifyDynamicSwaggerOptions {
   return {
     openapi: {
       info: {

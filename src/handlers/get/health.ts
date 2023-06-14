@@ -1,9 +1,8 @@
-import config from '#configs/config';
-import IReplyHealthDto from '#dto/common/IReplyHealthDto';
-import { fallbackLng } from '#tools/i18n/i18nConfig';
-import { maeumRestErrorSchema } from '@maeum/error-handler';
-import acceptLanguage from 'accept-language';
-import { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import { cfg } from '#/configs/ConfigContainer';
+import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
+import { ApiErrorJsonSchema } from '@maeum/error-controller';
+import { I18nController } from '@maeum/i18n-controller';
+import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -12,19 +11,19 @@ export const option: RouteShorthandOptions = {
     operationId: 'get-server-health',
     response: {
       200: { $ref: 'IReplyHealthDto' },
-      400: maeumRestErrorSchema,
-      500: maeumRestErrorSchema,
+      400: ApiErrorJsonSchema,
+      500: ApiErrorJsonSchema,
     },
   },
 };
 
 export default async function healthHandler(req: FastifyRequest) {
-  const language = acceptLanguage.get(req.headers['accept-language']) ?? fallbackLng;
+  const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
 
   return {
-    envMode: config.server.envMode,
-    runMode: config.server.runMode,
-    port: config.server.port,
+    envMode: cfg().server.envMode,
+    runMode: cfg().server.runMode,
+    port: cfg().server.port,
     i18n: { language },
   } satisfies IReplyHealthDto;
 }

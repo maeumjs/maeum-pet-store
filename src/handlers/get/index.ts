@@ -1,5 +1,5 @@
-import healthHandler, { option as healthOption } from '#handlers/get/health';
-import { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import healthHandler, { option as healthOption } from '#/handlers/get/health';
+import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
   ...healthOption,

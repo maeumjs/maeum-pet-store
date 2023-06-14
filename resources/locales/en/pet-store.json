@@ -1,0 +1,5 @@
+{
+  "not-found-category": "cannot found category: %{id}",
+  "not-found-tag": "cannot found tag: %{id}",
+  "not-found-pet": "cannot found pet: %{id}"
+}

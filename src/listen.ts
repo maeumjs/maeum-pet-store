@@ -1,11 +1,16 @@
-import { start } from '#server/app';
+import { DBContainer } from '#/database/DBContainer';
+import { ServerContainer } from '#/server/ServerContainer';
 import { isError } from 'my-easy-fp';
 
-start().catch((caught) => {
-  const err = isError(caught, new Error('unknown error raised'));
+const listen = async () => {
+  await DBContainer.bootstrap();
+  await ServerContainer.bootstrap();
 
-  // eslint-disable-next-line no-console
+  ServerContainer.it.listen();
+};
+
+listen().catch((caught) => {
+  const err = isError(caught, new Error('unknown error raised'));
   console.error(err.message);
-  // eslint-disable-next-line no-console
   console.error(err.stack);
 });

@@ -1,16 +1,15 @@
-import config from '#configs/config';
-import IReplyHealthDto from '#dto/common/IReplyHealthDto';
-import { fallbackLng } from '#tools/i18n/i18nConfig';
-import { RestError, maeumRestErrorSchema } from '@maeum/error-handler';
-import acceptLanguage from 'accept-language';
-import { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import { cfg } from '#/configs/ConfigContainer';
+import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
+import { ApiError } from '@maeum/error-controller';
+import { I18nController, type I18nParameters } from '@maeum/i18n-controller';
+import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
   schema: {
     tags: ['Common'],
     summary: 'Server health check and configuration getting',
     operationId: 'raise-error',
-    hide: true,
+    hide: false,
     querystring: {
       type: 'object',
       properties: {
@@ -21,8 +20,8 @@ export const option: RouteShorthandOptions = {
     },
     response: {
       200: { $ref: 'IReplyHealthDto' },
-      400: maeumRestErrorSchema,
-      500: maeumRestErrorSchema,
+      // 400: ApiErrorJsonSchema,
+      // 500: ApiErrorJsonSchema,
     },
   },
 };
@@ -30,14 +29,14 @@ export const option: RouteShorthandOptions = {
 export default async function errorHandler(
   req: FastifyRequest<{ Querystring: { ee?: string; code?: string; pe?: string } }>,
 ) {
-  const language = acceptLanguage.get(req.headers['accept-language']) ?? fallbackLng;
+  const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
 
   if (req.query.ee == null) {
     if (req.query.code != null) {
-      throw RestError.create({
+      throw new ApiError({
         code: req.query.code,
-        polyglot: { id: 'common.main.error' },
-        data: { description: 'this is a test payload' },
+        i18n: { phrase: 'common.main.error' } satisfies I18nParameters,
+        payload: { description: 'this is a test payload' },
       });
     }
 
@@ -45,16 +44,16 @@ export default async function errorHandler(
       throw new Error('plain error raised');
     }
 
-    throw RestError.create({
-      polyglot: { id: 'common.main.error' },
-      data: { description: 'this is a test payload' },
+    throw new ApiError({
+      i18n: { phrase: 'common.main.error' } satisfies I18nParameters,
+      payload: { description: 'this is a test payload' },
     });
   }
 
   return {
-    envMode: config.server.envMode,
-    runMode: config.server.runMode,
-    port: config.server.port,
+    envMode: cfg().server.envMode,
+    runMode: cfg().server.runMode,
+    port: cfg().server.port,
     i18n: { language },
   } satisfies IReplyHealthDto;
 }

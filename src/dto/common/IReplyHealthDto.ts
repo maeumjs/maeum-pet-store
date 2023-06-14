@@ -1,11 +1,11 @@
-import IServer from '#configs/interfaces/IServer';
+import type { IServer } from '#/configs/interfaces/IServer';
 
-export default interface IReplyHealthDto {
+export interface IReplyHealthDto {
   envMode: IServer['envMode'];
   runMode: IServer['runMode'];
   port: IServer['port'];
 
   i18n: {
-    language: string;
+    language: string | string[];
   };
 }

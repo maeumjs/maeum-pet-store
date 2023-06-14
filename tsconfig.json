@@ -3,28 +3,18 @@
   "ts-node": {
     "transpileOnly": true,
     "files": true,
-    "compilerOptions": {},
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     "incremental": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./",
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
-      "#configs/*": ["src/configs/*"],
-      "#dto/*": ["src/dto/*"],
-      "#entity/*": ["src/entity/*"],
-      "#server/*": ["src/server/*"],
-      "#frames/*": ["src/frames/*"],
-      "#handlers/*": ["src/handlers/*"],
-      "#loggers/*": ["src/loggers/*"],
-      "#modules/*": ["src/modules/*"],
-      "#transforms/*": ["src/transforms/*"],
-      "#repositories/*": ["src/repositories/*"],
-      "#entities/*": ["src/entities/*"],
-      "#storages/*": ["src/storages/*"],
-      "#tools/*": ["src/tools/*"]
+      "#/*": ["src/*"]
     },
     "declaration": true,
     "declarationMap": true,
