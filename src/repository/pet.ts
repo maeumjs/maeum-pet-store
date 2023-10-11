@@ -1,6 +1,7 @@
 import { DBContainer } from '#/database/DBContainer';
 import { CE_ENTITY_NAME } from '#/database/const-enum/CE_ENTITY_NAME';
 import { PetEntity } from '#/database/entities/PetEntity';
+import type { IDeletePetParamsDto, IDeletePetQuerystringDto } from '#/dto/v1/pet/IDeletePet';
 import type { IGetPetParamsDto, IGetPetQuerystringDto } from '#/dto/v1/pet/IGetPet';
 import type { IPostPetBodyDto } from '#/dto/v1/pet/IPostPet';
 import * as category from '#/repository/category';
@@ -34,6 +35,27 @@ export async function create(dto: IPostPetBodyDto) {
     category: categories,
     tag: tags,
   });
+
+  return pet;
+}
+
+export async function del(querystring: IDeletePetQuerystringDto, params: IDeletePetParamsDto) {
+  const repository = DBContainer.it.ds.getRepository(PetEntity);
+
+  const pet = await repository.findOne({
+    comment: querystring.tid,
+    where: {
+      id: params.id,
+    },
+    relations: {
+      category: true,
+      tag: true,
+    },
+  });
+
+  if (pet != null) {
+    await repository.delete({ id: params.id });
+  }
 
   return pet;
 }
