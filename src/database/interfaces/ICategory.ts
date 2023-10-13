@@ -3,12 +3,14 @@ import type { IBaseEntity } from '#/database/interfaces/IBaseEntity';
 /**
  * Category of Pet, Store
  */
-export interface ICategory extends IBaseEntity {
+export interface ICategory {
+  id: IBaseEntity['id'];
+
   /**
    * Category name
    *
    * @maxLength 200
-   * @minLength 3
+   * @minLength 2
    */
   name: string;
 }

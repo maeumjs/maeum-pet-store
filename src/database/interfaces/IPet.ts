@@ -4,12 +4,14 @@ import type { ICategory } from '#/database/interfaces/ICategory';
 import type { ITag } from '#/database/interfaces/ITag';
 import type { CE_PET_STATUS } from '#/database/interfaces/const-enum/CE_PET_STATUS';
 
-export interface IPet extends IBaseEntity {
+export interface IPet {
+  id: IBaseEntity['id'];
+
   /**
    * Pet name
    *
    * @maxLength 200
-   * @minLength 3
+   * @minLength 2
    */
   name: string;
 

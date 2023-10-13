@@ -1,4 +1,5 @@
 import routeMap from '#/handlers/route-map';
+import { TypeORMErrorHandler } from '#/modules/error/TypeORMErrorHandler';
 import type { IErrorControllerOption } from '@maeum/error-controller';
 import { pt, ptu, type I18nControllerOption } from '@maeum/i18n-controller';
 import { getRoutePathKey, type IWinstonLoggingControllerOption } from '@maeum/logging-controller';
@@ -6,6 +7,7 @@ import type { ISchemaControllerBootstrapOption } from '@maeum/schema-controller'
 import { getCwd } from '@maeum/tools';
 import ajvFormat from 'ajv-formats';
 import path from 'node:path';
+import { getRunMode } from './modules/getRunMode';
 
 export const ServerBootstrapOptions = {
   schema: {
@@ -34,6 +36,11 @@ export const ServerBootstrapOptions = {
     defaultLanguage: 'en',
   } satisfies I18nControllerOption,
   logger: {
+    winston: {
+      develop: () =>
+        getRunMode(process.env.RUN_MODE) !== 'production' &&
+        getRunMode(process.env.RUN_MODE) !== 'stage',
+    },
     request: {
       isReplyPayloadLogging: true,
       includes: new Map<string, boolean>(
@@ -45,7 +52,16 @@ export const ServerBootstrapOptions = {
     },
   } satisfies IWinstonLoggingControllerOption,
   errors: {
+    encryption: true,
     translate: (req, option) => ptu(req, option),
     fallbackMessage: (req) => pt(req, 'common.main.error'),
+    includeDefaultHandler: true,
+    handlers: [
+      new TypeORMErrorHandler({
+        encryption: true,
+        translate: (req, option) => ptu(req, option),
+        fallbackMessage: (req) => pt(req, 'common.main.error'),
+      }),
+    ],
   } satisfies IErrorControllerOption,
 };

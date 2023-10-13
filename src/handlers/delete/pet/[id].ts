@@ -25,6 +25,6 @@ export default async function handler(
     Params: IDeletePetParamsDto;
   }>,
 ) {
-  const category = await del(req.query, req.params);
-  return category;
+  const pet = await del(req.query, req.params);
+  return pet;
 }

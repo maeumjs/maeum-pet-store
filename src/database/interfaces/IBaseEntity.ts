@@ -5,5 +5,5 @@ export interface IBaseEntity {
    * @asType integer
    * @foramt int64
    */
-  id: string;
+  id: number;
 }

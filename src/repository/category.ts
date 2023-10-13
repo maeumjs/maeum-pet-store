@@ -10,6 +10,11 @@ import type {
   IGetCategoryQuerystringDto,
 } from '#/dto/v1/category/IGetCategory';
 import type { IPostCategoryBodyDto } from '#/dto/v1/category/IPostCategory';
+import type {
+  IPutCategoryBodyDto,
+  IPutCategoryParamsDto,
+  IPutCategoryQuerystringDto,
+} from '#/dto/v1/category/IPutCategory';
 import { In } from 'typeorm';
 
 export async function create(dto: IPostCategoryBodyDto) {
@@ -32,6 +37,18 @@ export async function read(querystring: IGetCategoryQuerystringDto, params: IGet
       id: params.id,
     },
   });
+
+  return category;
+}
+
+export async function update(
+  _querystring: IPutCategoryQuerystringDto,
+  params: IPutCategoryParamsDto,
+  body: IPutCategoryBodyDto,
+) {
+  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+
+  const category = await repository.update({ id: params.id }, { name: body.name });
 
   return category;
 }
@@ -59,6 +76,12 @@ export async function del(
 export async function reads(names: string[]) {
   const repository = DBContainer.it.ds.getRepository(CategoryEntity);
   const categories = await repository.find({ where: { name: In(names) } });
+  return categories;
+}
+
+export async function readByIds(ids: number[]) {
+  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const categories = await repository.find({ where: { name: In(ids) } });
   return categories;
 }
 

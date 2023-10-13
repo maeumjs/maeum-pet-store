@@ -4,6 +4,7 @@ import type { ITag } from '#/database/interfaces/ITag';
 import type { IDeleteTagParamsDto, IDeleteTagQuerystringDto } from '#/dto/v1/tag/IDeleteTag';
 import type { IGetTagParamsDto, IGetTagQuerystringDto } from '#/dto/v1/tag/IGetTag';
 import type { IPostTagBodyDto } from '#/dto/v1/tag/IPostTag';
+import type { IPutTagBodyDto, IPutTagParamsDto, IPutTagQuerystringDto } from '#/dto/v1/tag/IPutTag';
 import { In } from 'typeorm';
 
 export async function create(dto: IPostTagBodyDto) {
@@ -27,6 +28,18 @@ export async function read(querystring: IGetTagQuerystringDto, params: IGetTagPa
   });
 
   return tag;
+}
+
+export async function update(
+  _querystring: IPutTagQuerystringDto,
+  params: IPutTagParamsDto,
+  body: IPutTagBodyDto,
+) {
+  const repository = DBContainer.it.ds.getRepository(TagEntity);
+
+  const category = await repository.update({ id: params.id }, { name: body.name });
+
+  return category;
 }
 
 export async function del(querystring: IDeleteTagQuerystringDto, params: IDeleteTagParamsDto) {
