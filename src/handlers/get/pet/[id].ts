@@ -5,7 +5,7 @@ import {
   ApiErrorJsonSchema,
   ApiValidationErrorJsonSchema,
 } from '@maeum/error-controller';
-import type { I18nParameters } from '@maeum/i18n-controller';
+import type { II18nParameters } from '@maeum/i18n-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
@@ -34,7 +34,7 @@ export default async function handler(
       i18n: {
         phrase: 'pet-store.not-found-pet',
         option: { id: req.params.id },
-      } satisfies I18nParameters,
+      } satisfies II18nParameters,
       status: 404,
       $option: {
         logging: {

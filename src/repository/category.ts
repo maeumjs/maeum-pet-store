@@ -1,4 +1,5 @@
 import { DBContainer } from '#/database/DBContainer';
+import { CE_DATASORUCE_NAME } from '#/database/const-enum/CE_DATASORUCE_NAME';
 import { CategoryEntity } from '#/database/entities/CategoryEntity';
 import type { ICategory } from '#/database/interfaces/ICategory';
 import type {
@@ -18,7 +19,7 @@ import type {
 import { In } from 'typeorm';
 
 export async function create(dto: IPostCategoryBodyDto) {
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
 
   const category = await repository.save({
     name: dto.name,
@@ -28,7 +29,7 @@ export async function create(dto: IPostCategoryBodyDto) {
 }
 
 export async function read(querystring: IGetCategoryQuerystringDto, params: IGetCategoryParamsDto) {
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
 
   const category = await repository.find({
     comment: querystring.tid,
@@ -46,7 +47,7 @@ export async function update(
   params: IPutCategoryParamsDto,
   body: IPutCategoryBodyDto,
 ) {
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
 
   const category = await repository.update({ id: params.id }, { name: body.name });
 
@@ -57,7 +58,7 @@ export async function del(
   querystring: IDeleteCategoryQuerystringDto,
   params: IDeleteCategoryParamsDto,
 ) {
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
 
   const category = await repository.findOne({
     comment: querystring.tid,
@@ -74,13 +75,13 @@ export async function del(
 }
 
 export async function reads(names: string[]) {
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
   const categories = await repository.find({ where: { name: In(names) } });
   return categories;
 }
 
 export async function readByIds(ids: number[]) {
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
   const categories = await repository.find({ where: { name: In(ids) } });
   return categories;
 }
@@ -90,7 +91,7 @@ export async function readsAndCreates(names: string[]) {
   const foundedNames = categories.map((category) => category.name);
   const notFoundNames = names.filter((name) => !foundedNames.includes(name));
 
-  const repository = DBContainer.it.ds.getRepository(CategoryEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
   const newCategory = await repository.save(
     notFoundNames.map((category) => ({ name: category }) satisfies Omit<ICategory, 'id'>),
   );

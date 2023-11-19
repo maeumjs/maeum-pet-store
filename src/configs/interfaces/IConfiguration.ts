@@ -6,5 +6,8 @@ import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectio
 export interface IConfiguration {
   server: IServer;
   endpoint: TEndpoint;
-  mysql: Pick<Omit<MysqlConnectionOptions, 'cache'>, 'host' | 'port' | 'database' | 'replication'>;
+  mysql: Record<
+    string,
+    Pick<Omit<MysqlConnectionOptions, 'cache'>, 'host' | 'port' | 'database' | 'replication'>
+  >;
 }

@@ -1,4 +1,4 @@
-import { ConfigContainer, cfg } from '#/configs/ConfigContainer';
+import { ConfigContainer } from '#/configs/ConfigContainer';
 import route from '#/handlers/route';
 import { fastifyOptionFactory } from '#/server/fastifyOptionFactory';
 import { swaggerConfig } from '#/server/plugin/swaggerConfig';
@@ -42,13 +42,13 @@ export class ServerContainer {
       });
 
     // If server start production mode, disable swagger-ui
-    if (cfg().server.runMode !== 'production') {
+    if (ConfigContainer.it.config.server.runMode !== 'production') {
       await fastify.register(fastifySwagger, swaggerConfig());
       await fastify.register(fastifySwaggerUI, swaggerUiConfig());
     }
 
     fastify.register(RequestLogger.it.plugin, RequestLogger.it);
-    fastify.setErrorHandler(ErrorController.handler);
+    fastify.setErrorHandler(ErrorController.fastifyHandler);
 
     route(fastify);
 

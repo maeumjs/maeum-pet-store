@@ -68,7 +68,3 @@ export class ConfigContainer {
     return this.#config.server.port;
   }
 }
-
-export function cfg() {
-  return ConfigContainer.it.config;
-}

@@ -1,3 +1,4 @@
+import { CronContainer } from '#/cron/CronContainer';
 import { DBContainer } from '#/database/DBContainer';
 import { ServerContainer } from '#/server/ServerContainer';
 import { isError } from 'my-easy-fp';
@@ -5,6 +6,7 @@ import { isError } from 'my-easy-fp';
 const listen = async () => {
   await DBContainer.bootstrap();
   await ServerContainer.bootstrap();
+  await CronContainer.bootstrap();
 
   ServerContainer.it.listen();
 };

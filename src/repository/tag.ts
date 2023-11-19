@@ -1,4 +1,5 @@
 import { DBContainer } from '#/database/DBContainer';
+import { CE_DATASORUCE_NAME } from '#/database/const-enum/CE_DATASORUCE_NAME';
 import { TagEntity } from '#/database/entities/TagEntity';
 import type { ITag } from '#/database/interfaces/ITag';
 import type { IDeleteTagParamsDto, IDeleteTagQuerystringDto } from '#/dto/v1/tag/IDeleteTag';
@@ -8,7 +9,7 @@ import type { IPutTagBodyDto, IPutTagParamsDto, IPutTagQuerystringDto } from '#/
 import { In } from 'typeorm';
 
 export async function create(dto: IPostTagBodyDto) {
-  const repository = DBContainer.it.ds.getRepository(TagEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
 
   const tag = await repository.save({
     name: dto.name,
@@ -18,7 +19,7 @@ export async function create(dto: IPostTagBodyDto) {
 }
 
 export async function read(querystring: IGetTagQuerystringDto, params: IGetTagParamsDto) {
-  const repository = DBContainer.it.ds.getRepository(TagEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
 
   const tag = await repository.findOne({
     comment: querystring.tid,
@@ -35,7 +36,7 @@ export async function update(
   params: IPutTagParamsDto,
   body: IPutTagBodyDto,
 ) {
-  const repository = DBContainer.it.ds.getRepository(TagEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
 
   const category = await repository.update({ id: params.id }, { name: body.name });
 
@@ -43,7 +44,7 @@ export async function update(
 }
 
 export async function del(querystring: IDeleteTagQuerystringDto, params: IDeleteTagParamsDto) {
-  const repository = DBContainer.it.ds.getRepository(TagEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
 
   const tag = await repository.findOne({
     comment: querystring.tid,
@@ -60,7 +61,7 @@ export async function del(querystring: IDeleteTagQuerystringDto, params: IDelete
 }
 
 export async function reads(names: string[]) {
-  const repository = DBContainer.it.ds.getRepository(TagEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
   const tags = await repository.find({ where: { name: In(names) } });
   return tags;
 }
@@ -70,7 +71,7 @@ export async function readsAndCreates(names: string[]) {
   const foundedNames = tags.map((tag) => tag.name);
   const notFoundNames = names.filter((name) => !foundedNames.includes(name));
 
-  const repository = DBContainer.it.ds.getRepository(TagEntity);
+  const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
   const newCategory = await repository.save(
     notFoundNames.map((category) => ({ name: category }) satisfies Omit<ITag, 'id'>),
   );

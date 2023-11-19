@@ -4,16 +4,15 @@
   },
   // database connection configuration
   "mysql": {
-    "maeum": {
-      "host": {
-        "io": "localhost",
-        "in": "localhost"
-      },
+    "pet-store": {
+      "type": "mysql",
+      "host": "localhost",
       "port": 9301,
-      "db": "maeum_boilerplate",
-      "retry": 3,
-      "pool": 3,
-      "queue": 5
+      "database": "pet_store",
+      "username": "",
+      "password": "",
+      "poolSize": 10,
+      "queue": 10
     }
   },
   // application configuration

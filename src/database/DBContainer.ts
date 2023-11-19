@@ -1,14 +1,6 @@
-import { ConfigContainer } from '#/configs/ConfigContainer';
-import { CategoryEntity } from '#/database/entities/CategoryEntity';
-import { PetCategoryMTMEntity } from '#/database/entities/PetCategoryMTMEntity';
-import { PetTagMTMEntity } from '#/database/entities/PetTagMTMEntity';
-import { TagEntity } from '#/database/entities/TagEntity';
-import { WinstonContainer } from '@maeum/logging-controller';
-import { DataSource } from 'typeorm';
-import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-import { PetEntity } from './entities/PetEntity';
-
-const log = WinstonContainer.l(__filename);
+import { CE_DATASORUCE_NAME } from '#/database/const-enum/CE_DATASORUCE_NAME';
+import { getPetStoreMysql } from '#/database/data-sources/getPetStoreMysql';
+import type { DataSource } from 'typeorm';
 
 export class DBContainer {
   static #it: DBContainer;
@@ -24,40 +16,32 @@ export class DBContainer {
   }
 
   static async bootstrap() {
-    const username = process.env.DB_USERNAME;
-    const password = process.env.DB_PASSWORD;
+    const petStore = getPetStoreMysql();
+    await petStore.initialize();
 
-    if (username == null || password == null) {
-      throw new Error(`Please specify database username, password: ${username}, ${password}`);
-    }
-
-    const { mysql } = ConfigContainer.it.config;
-    const option: MysqlConnectionOptions = {
-      ...mysql,
-      type: 'mysql',
-      username,
-      password,
-      synchronize: true,
-      entities: [CategoryEntity, TagEntity, PetEntity, PetCategoryMTMEntity, PetTagMTMEntity],
-    };
-    const ds = new DataSource(option);
-    await ds.initialize();
-
-    log.$(
-      `database connection complete: ${option.username}@${option.host}:${option.port}/${option.database}`,
+    DBContainer.#it = new DBContainer(
+      new Map<CE_DATASORUCE_NAME, DataSource>([[CE_DATASORUCE_NAME.PET_STORE, petStore]]),
     );
-
-    DBContainer.#it = new DBContainer(ds);
     DBContainer.#isBootstrap = true;
   }
 
-  #ds: DataSource;
+  #dses: Map<CE_DATASORUCE_NAME, DataSource>;
 
-  constructor(ds: DataSource) {
-    this.#ds = ds;
+  constructor(ds: Map<CE_DATASORUCE_NAME, DataSource>) {
+    this.#dses = ds;
   }
 
-  get ds(): Readonly<DataSource> {
-    return this.#ds;
+  get dses(): Readonly<Map<CE_DATASORUCE_NAME, DataSource>> {
+    return this.#dses;
+  }
+
+  ds(name: CE_DATASORUCE_NAME): DataSource {
+    const dataSource = this.#dses.get(name);
+
+    if (dataSource == null) {
+      throw new Error(`Cannot found data-source: ${name}`);
+    }
+
+    return dataSource;
   }
 }

@@ -1,28 +1,30 @@
-/* eslint-disable class-methods-use-this */
-import { DefaultErrorHandler, getSourceLocation } from '@maeum/error-controller';
+import {
+  HTTPErrorHandler,
+  getSourceLocation,
+  type THTTPErrorHandlerParameters,
+} from '@maeum/error-controller';
 import { EncryptContiner } from '@maeum/tools';
-import type { ErrorObject } from 'ajv';
-import type { FastifyReply, FastifyRequest } from 'fastify';
 import { isError } from 'my-easy-fp';
 import { QueryFailedError, TypeORMError } from 'typeorm';
 
-export class TypeORMErrorHandler extends DefaultErrorHandler {
-  override isSelected(err: Error): boolean {
-    if (err instanceof TypeORMError) {
+export class TypeORMErrorHandler extends HTTPErrorHandler {
+  /* eslint-disable-next-line class-methods-use-this */
+  override isSelected(args: THTTPErrorHandlerParameters): boolean {
+    if (args.err instanceof TypeORMError) {
       return true;
     }
 
     return false;
   }
 
-  protected serializor(
-    err: Error & { validation?: ErrorObject[] },
-    req: FastifyRequest,
-    _reply: FastifyReply,
-  ): { code: string; message?: string; info?: string | object } {
-    if (isError(err) != null && err instanceof QueryFailedError) {
-      const code = getSourceLocation(err);
-      const message = this.getMessage(req, { message: err.message });
+  protected serializor(args: THTTPErrorHandlerParameters): {
+    code: string;
+    message?: string;
+    info?: string | object;
+  } {
+    if (isError(args.err) != null && args.err instanceof QueryFailedError) {
+      const code = getSourceLocation(args.err);
+      const message = this.getMessage(args, { message: args.err.message });
       const encrypted =
         this.option.encryption && EncryptContiner.isBootstrap
           ? EncryptContiner.it.encrypt(code)
@@ -31,15 +33,15 @@ export class TypeORMErrorHandler extends DefaultErrorHandler {
       const info =
         this.option.encryption && EncryptContiner.isBootstrap
           ? EncryptContiner.it.encrypt(
-              JSON.stringify({ sql: err.query, params: err.parameters }, undefined, 2),
+              JSON.stringify({ sql: args.err.query, params: args.err.parameters }, undefined, 2),
             )
-          : { sql: err.query, params: err.parameters };
+          : { sql: args.err.query, params: args.err.parameters };
 
       return { code: encrypted, message, info };
     }
 
-    const code = getSourceLocation(err);
-    const message = this.getMessage(req, { message: err.message });
+    const code = getSourceLocation(args.err);
+    const message = this.getMessage(args, { message: args.err.message });
     const encrypted =
       this.option.encryption && EncryptContiner.isBootstrap
         ? EncryptContiner.it.encrypt(code)

@@ -1,7 +1,7 @@
-import { cfg } from '#/configs/ConfigContainer';
+import { ConfigContainer } from '#/configs/ConfigContainer';
 import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
 import { ApiError } from '@maeum/error-controller';
-import { I18nController, type I18nParameters } from '@maeum/i18n-controller';
+import { I18nController, type II18nParameters } from '@maeum/i18n-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
@@ -35,7 +35,7 @@ export default async function errorHandler(
     if (req.query.code != null) {
       throw new ApiError({
         code: req.query.code,
-        i18n: { phrase: 'common.main.error' } satisfies I18nParameters,
+        i18n: { phrase: 'common.main.error' } satisfies II18nParameters,
         payload: { description: 'this is a test payload' },
       });
     }
@@ -45,15 +45,15 @@ export default async function errorHandler(
     }
 
     throw new ApiError({
-      i18n: { phrase: 'common.main.error' } satisfies I18nParameters,
+      i18n: { phrase: 'common.main.error' } satisfies II18nParameters,
       payload: { description: 'this is a test payload' },
     });
   }
 
   return {
-    envMode: cfg().server.envMode,
-    runMode: cfg().server.runMode,
-    port: cfg().server.port,
+    envMode: ConfigContainer.it.config.server.envMode,
+    runMode: ConfigContainer.it.config.server.runMode,
+    port: ConfigContainer.it.config.server.port,
     i18n: { language },
   } satisfies IReplyHealthDto;
 }

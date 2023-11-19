@@ -1,7 +1,8 @@
 import routeMap from '#/handlers/route-map';
+import { CronErrorHandler } from '#/modules/error/CronErrorHandler';
 import { TypeORMErrorHandler } from '#/modules/error/TypeORMErrorHandler';
 import type { IErrorControllerOption } from '@maeum/error-controller';
-import { pt, ptu, type I18nControllerOption } from '@maeum/i18n-controller';
+import { I18nController, pt, ptu, type II18nControllerOption } from '@maeum/i18n-controller';
 import { getRoutePathKey, type IWinstonLoggingControllerOption } from '@maeum/logging-controller';
 import type { ISchemaControllerBootstrapOption } from '@maeum/schema-controller';
 import { getCwd } from '@maeum/tools';
@@ -34,7 +35,7 @@ export const ServerBootstrapOptions = {
   i18n: {
     localeRoot: path.join(getCwd(process.env), 'resources', 'locales'),
     defaultLanguage: 'en',
-  } satisfies I18nControllerOption,
+  } satisfies II18nControllerOption,
   logger: {
     winston: {
       develop: () =>
@@ -53,14 +54,22 @@ export const ServerBootstrapOptions = {
   } satisfies IWinstonLoggingControllerOption,
   errors: {
     encryption: true,
-    translate: (req, option) => ptu(req, option),
-    fallbackMessage: (req) => pt(req, 'common.main.error'),
+    translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
+    fallbackMessage: () => pt('en', 'common.main.error'),
     includeDefaultHandler: true,
     handlers: [
       new TypeORMErrorHandler({
         encryption: true,
-        translate: (req, option) => ptu(req, option),
-        fallbackMessage: (req) => pt(req, 'common.main.error'),
+        getLanguage: (args) =>
+          I18nController.it.getLanguageFromRequestHeader(args.req.headers['accept-language']),
+        translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
+        fallbackMessage: () => pt('en', 'common.main.error'),
+      }),
+      new CronErrorHandler({
+        encryption: true,
+        getLanguage: () => 'en',
+        translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
+        fallbackMessage: () => pt('en', 'common.main.error'),
       }),
     ],
   } satisfies IErrorControllerOption,

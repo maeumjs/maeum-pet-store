@@ -9,15 +9,13 @@
     "incremental": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true,
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
       "#/*": ["src/*"]
     },
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "outDir": "./dist",
     "removeComments": true,
     "isolatedModules": true,
