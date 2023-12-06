@@ -3,7 +3,7 @@ import type { IBaseEntity } from '#/database/interfaces/IBaseEntity';
 /**
  * Category of Pet, Store
  */
-export interface ICategory {
+export interface ICategoryEntity {
   id: IBaseEntity['id'];
 
   /**

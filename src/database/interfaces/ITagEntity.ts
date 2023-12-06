@@ -3,7 +3,7 @@ import type { IBaseEntity } from '#/database/interfaces/IBaseEntity';
 /**
  * Tag of Pet, Store
  */
-export interface ITag {
+export interface ITagEntity {
   id: IBaseEntity['id'];
 
   /**

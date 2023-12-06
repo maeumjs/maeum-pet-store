@@ -6,9 +6,9 @@ import { PetCategoryMTMEntity } from '#/database/entities/PetCategoryMTMEntity';
 import { PetEntity } from '#/database/entities/PetEntity';
 import { PetTagMTMEntity } from '#/database/entities/PetTagMTMEntity';
 import { TagEntity } from '#/database/entities/TagEntity';
-import type { ICategory } from '#/database/interfaces/ICategory';
-import type { IPet } from '#/database/interfaces/IPet';
-import type { ITag } from '#/database/interfaces/ITag';
+import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
+import type { IPetEntity } from '#/database/interfaces/IPetEntity';
+import type { ITagEntity } from '#/database/interfaces/ITagEntity';
 import type { IDeletePetParamsDto, IDeletePetQuerystringDto } from '#/dto/v1/pet/IDeletePet';
 import type { IGetPetParamsDto, IGetPetQuerystringDto } from '#/dto/v1/pet/IGetPet';
 import type { IPostPetBodyDto } from '#/dto/v1/pet/IPostPet';
@@ -49,9 +49,9 @@ export async function create(dto: IPostPetBodyDto) {
 }
 
 export function getRelations(
-  asIs: ICategory[] | ITag[],
-  toBe: ICategory[] | ITag[],
-): { delete: ICategory[] | ITag[]; create: ICategory[] | ITag[] } {
+  asIs: ICategoryEntity[] | ITagEntity[],
+  toBe: ICategoryEntity[] | ITagEntity[],
+): { delete: ICategoryEntity[] | ITagEntity[]; create: ICategoryEntity[] | ITagEntity[] } {
   const willDelete = asIs.filter(
     (asIsEntity) => !toBe.map((toBeEntity) => toBeEntity.id).includes(asIsEntity.id),
   );
@@ -62,7 +62,7 @@ export function getRelations(
   return { delete: willDelete, create: willCreate };
 }
 
-async function getCategories(tid: string, pet: IPet) {
+async function getCategories(tid: string, pet: IPetEntity) {
   const relations = await DBContainer.it
     .ds(CE_DATASORUCE_NAME.PET_STORE)
     .getRepository(PetCategoryMTMEntity)
@@ -88,7 +88,7 @@ async function getCategories(tid: string, pet: IPet) {
   return categories;
 }
 
-async function getTags(tid: string, pet: IPet) {
+async function getTags(tid: string, pet: IPetEntity) {
   const relations = await DBContainer.it
     .ds(CE_DATASORUCE_NAME.PET_STORE)
     .getRepository(PetTagMTMEntity)

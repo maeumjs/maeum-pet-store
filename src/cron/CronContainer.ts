@@ -30,6 +30,10 @@ export class CronContainer {
 
   #job: CronJob<null, CronContainer> | undefined = undefined;
 
+  #start: boolean = false;
+
+  #runOnInit: boolean = false;
+
   get job() {
     return this.#job;
   }
@@ -40,11 +44,15 @@ export class CronContainer {
       this.#schedule,
       handle,
       null,
-      true,
+      this.#start,
       'Asia/Seoul',
       this,
-      true,
+      this.#runOnInit,
     );
+  }
+
+  stop() {
+    this.#job?.stop();
   }
 
   handle() {

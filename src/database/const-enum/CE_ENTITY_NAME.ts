@@ -8,6 +8,9 @@ export const CE_ENTITY_NAME = {
   PET: 'pet',
   PET_TABLE: 'tbl_pet',
 
+  IMAGE: 'image',
+  IMAGE_TABLE: 'tbl_image',
+
   PET_CATEGORY_MTM: 'pet_category_mtm',
   PET_CATEGORY_MTM_TABLE: 'tbl_pet_category_mtm',
 

@@ -1,7 +1,7 @@
 import { DBContainer } from '#/database/DBContainer';
 import { CE_DATASORUCE_NAME } from '#/database/const-enum/CE_DATASORUCE_NAME';
 import { TagEntity } from '#/database/entities/TagEntity';
-import type { ITag } from '#/database/interfaces/ITag';
+import type { ITagEntity } from '#/database/interfaces/ITagEntity';
 import type { IDeleteTagParamsDto, IDeleteTagQuerystringDto } from '#/dto/v1/tag/IDeleteTag';
 import type { IGetTagParamsDto, IGetTagQuerystringDto } from '#/dto/v1/tag/IGetTag';
 import type { IPostTagBodyDto } from '#/dto/v1/tag/IPostTag';
@@ -73,7 +73,7 @@ export async function readsAndCreates(names: string[]) {
 
   const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(TagEntity);
   const newCategory = await repository.save(
-    notFoundNames.map((category) => ({ name: category }) satisfies Omit<ITag, 'id'>),
+    notFoundNames.map((category) => ({ name: category }) satisfies Omit<ITagEntity, 'id'>),
   );
 
   return [...tags, ...newCategory];

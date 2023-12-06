@@ -1,12 +1,12 @@
-import type { ICategory } from '#/database/interfaces/ICategory';
+import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
 import type { ITid } from '#/dto/common/ITid';
 
 export interface IPutCategoryQuerystringDto extends ITid {}
 
 export interface IPutCategoryParamsDto {
-  id: ICategory['id'];
+  id: ICategoryEntity['id'];
 }
 
 export interface IPutCategoryBodyDto {
-  name: ICategory['name'];
+  name: ICategoryEntity['name'];
 }

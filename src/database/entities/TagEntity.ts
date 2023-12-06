@@ -1,9 +1,9 @@
 import { PrimaryKey } from '#/database/columns/PrimaryKey';
 import { CE_ENTITY_NAME } from '#/database/const-enum/CE_ENTITY_NAME';
-import type { ITag } from '#/database/interfaces/ITag';
+import type { ITagEntity } from '#/database/interfaces/ITagEntity';
 import { EntitySchema } from 'typeorm';
 
-export const TagEntity = new EntitySchema<ITag>({
+export const TagEntity = new EntitySchema<ITagEntity>({
   name: CE_ENTITY_NAME.TAG,
   tableName: CE_ENTITY_NAME.TAG_TABLE,
   columns: {

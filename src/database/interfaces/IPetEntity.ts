@@ -1,10 +1,10 @@
 import type { CE_ENTITY_NAME } from '#/database/const-enum/CE_ENTITY_NAME';
 import type { IBaseEntity } from '#/database/interfaces/IBaseEntity';
-import type { ICategory } from '#/database/interfaces/ICategory';
-import type { ITag } from '#/database/interfaces/ITag';
+import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
+import type { ITagEntity } from '#/database/interfaces/ITagEntity';
 import type { CE_PET_STATUS } from '#/database/interfaces/const-enum/CE_PET_STATUS';
 
-export interface IPet {
+export interface IPetEntity {
   id: IBaseEntity['id'];
 
   /**
@@ -18,7 +18,7 @@ export interface IPet {
   status: CE_PET_STATUS;
 }
 
-export interface IPetRelations {
-  [CE_ENTITY_NAME.CATEGORY]: ICategory[];
-  [CE_ENTITY_NAME.TAG]: ITag[];
+export interface IPetEntityRelations {
+  [CE_ENTITY_NAME.CATEGORY]: ICategoryEntity[];
+  [CE_ENTITY_NAME.TAG]: ITagEntity[];
 }

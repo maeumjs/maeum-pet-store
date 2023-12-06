@@ -1,6 +1,6 @@
 import type { IBaseEntity } from '#/database/interfaces/IBaseEntity';
 
-export interface IPetTagMTM {
+export interface IPetTagMTMEntity {
   petId: IBaseEntity['id'];
 
   tagId: IBaseEntity['id'];

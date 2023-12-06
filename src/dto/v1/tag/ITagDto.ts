@@ -1,4 +1,4 @@
-import type { ITag } from '#/database/interfaces/ITag';
+import type { ITagEntity } from '#/database/interfaces/ITagEntity';
 
 /**
  * TagDto of Pet, Store
@@ -7,10 +7,10 @@ export interface ITagDto {
   /**
    * category id
    */
-  id: ITag['id'];
+  id: ITagEntity['id'];
 
   /**
    * category name
    */
-  name: ITag['name'];
+  name: ITagEntity['name'];
 }

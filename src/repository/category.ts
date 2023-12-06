@@ -1,7 +1,7 @@
 import { DBContainer } from '#/database/DBContainer';
 import { CE_DATASORUCE_NAME } from '#/database/const-enum/CE_DATASORUCE_NAME';
 import { CategoryEntity } from '#/database/entities/CategoryEntity';
-import type { ICategory } from '#/database/interfaces/ICategory';
+import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
 import type {
   IDeleteCategoryParamsDto,
   IDeleteCategoryQuerystringDto,
@@ -93,7 +93,7 @@ export async function readsAndCreates(names: string[]) {
 
   const repository = DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE).getRepository(CategoryEntity);
   const newCategory = await repository.save(
-    notFoundNames.map((category) => ({ name: category }) satisfies Omit<ICategory, 'id'>),
+    notFoundNames.map((category) => ({ name: category }) satisfies Omit<ICategoryEntity, 'id'>),
   );
 
   return [...categories, ...newCategory];

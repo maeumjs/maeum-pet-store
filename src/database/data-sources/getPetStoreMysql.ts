@@ -1,5 +1,6 @@
 import { ConfigContainer } from '#/configs/ConfigContainer';
 import { CategoryEntity } from '#/database/entities/CategoryEntity';
+import { ImageEntity } from '#/database/entities/ImageEntity';
 import { PetCategoryMTMEntity } from '#/database/entities/PetCategoryMTMEntity';
 import { PetEntity } from '#/database/entities/PetEntity';
 import { PetTagMTMEntity } from '#/database/entities/PetTagMTMEntity';
@@ -25,7 +26,14 @@ export function getPetStoreMysql() {
     username,
     password,
     synchronize: true,
-    entities: [CategoryEntity, TagEntity, PetEntity, PetCategoryMTMEntity, PetTagMTMEntity],
+    entities: [
+      CategoryEntity,
+      TagEntity,
+      PetEntity,
+      PetCategoryMTMEntity,
+      PetTagMTMEntity,
+      ImageEntity,
+    ],
   };
 
   const ds = new DataSource(option);

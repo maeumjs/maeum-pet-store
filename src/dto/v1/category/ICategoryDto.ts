@@ -1,4 +1,4 @@
-import type { ICategory } from '#/database/interfaces/ICategory';
+import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
 
 /**
  * CategoryDto of Pet, Store
@@ -7,10 +7,10 @@ export interface ICategoryDto {
   /**
    * category id
    */
-  id: ICategory['id'];
+  id: ICategoryEntity['id'];
 
   /**
    * category name
    */
-  name: ICategory['name'];
+  name: ICategoryEntity['name'];
 }

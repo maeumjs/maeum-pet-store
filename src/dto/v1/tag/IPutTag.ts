@@ -1,12 +1,12 @@
-import type { ITag } from '#/database/interfaces/ITag';
+import type { ITagEntity } from '#/database/interfaces/ITagEntity';
 import type { ITid } from '#/dto/common/ITid';
 
 export interface IPutTagQuerystringDto extends ITid {}
 
 export interface IPutTagParamsDto {
-  id: ITag['id'];
+  id: ITagEntity['id'];
 }
 
 export interface IPutTagBodyDto {
-  name: ITag['name'];
+  name: ITagEntity['name'];
 }
