@@ -1,8 +1,15 @@
 import { ConfigContainer } from '#/configs/ConfigContainer';
+import type { TidAsyncResource } from '#/cron/TidAsyncResource';
 import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
+import { requestContext } from '@fastify/request-context';
+import { AsyncContainer } from '@maeum/async-context';
 import { ApiErrorJsonSchema } from '@maeum/error-controller';
 import { I18nController } from '@maeum/i18n-controller';
+import { WinstonContainer } from '@maeum/logging-controller';
+import { executionAsyncId } from 'async_hooks';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
+
+const log = WinstonContainer.l(__filename);
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -19,6 +26,10 @@ export const option: RouteShorthandOptions = {
 
 export default async function healthHandler(req: FastifyRequest) {
   const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
+  const tid = requestContext.get('tid');
+  const store = AsyncContainer.getStore<TidAsyncResource>(executionAsyncId());
+
+  log.$('request id: ', tid, store?.tid);
 
   return {
     envMode: ConfigContainer.it.config.server.envMode,

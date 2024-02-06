@@ -1,10 +1,12 @@
 import { ConfigContainer } from '#/configs/ConfigContainer';
+import { TidAsyncResource } from '#/cron/TidAsyncResource';
 import route from '#/handlers/route';
 import { fastifyOptionFactory } from '#/server/fastifyOptionFactory';
 import { swaggerConfig } from '#/server/plugin/swaggerConfig';
 import { swaggerUiConfig } from '#/server/plugin/swaggerUiConfig';
 import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
+import { fastifyRequestContext } from '@fastify/request-context';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUI from '@fastify/swagger-ui';
 import fastifyUrlData from '@fastify/url-data';
@@ -28,9 +30,13 @@ export class ServerContainer {
   static async bootstrap() {
     const { fastify } = fastifyOptionFactory();
 
-    fastify
+    await fastify
       .register(fastifyUrlData)
       .register(fastifyCors)
+      .register(fastifyRequestContext, {
+        defaultStoreValues: (request) => ({ tid: request.id }),
+        createAsyncResource: (request) => new TidAsyncResource(request.id),
+      })
       .register(fastifyMultipart, {
         attachFieldsToBody: true,
         throwFileSizeLimit: true,
@@ -47,7 +53,7 @@ export class ServerContainer {
       await fastify.register(fastifySwaggerUI, swaggerUiConfig());
     }
 
-    fastify.register(RequestLogger.it.plugin, RequestLogger.it);
+    await fastify.register(RequestLogger.it.plugin, RequestLogger.it);
     fastify.setErrorHandler(ErrorController.fastifyHandler);
 
     route(fastify);

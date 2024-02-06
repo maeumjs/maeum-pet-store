@@ -1,6 +1,8 @@
 import { ConfigContainer } from '#/configs/ConfigContainer';
 import { DotenvContainer } from '#/configs/DotenvContainer';
 import { ServerBootstrapOptions } from '#/configs/ServerBootstrapOptions';
+import { PackageJsonLoader } from '#/modules/packages/PackageJsonLoader';
+import { AsyncContainer } from '@maeum/async-context';
 import { ErrorController } from '@maeum/error-controller';
 import { I18nController } from '@maeum/i18n-controller';
 import { bootstrapWinston } from '@maeum/logging-controller';
@@ -20,3 +22,5 @@ import { EncryptContiner } from '@maeum/tools';
 /* 05 */ bootstrapWinston(false, ServerBootstrapOptions.logger);
 /* 06 */ ErrorController.bootstrap(ServerBootstrapOptions.errors);
 /* 07 */ EncryptContiner.bootstrap({ key: process.env.ENV_ENCRYPTION_KEY });
+/* 08 */ AsyncContainer.bootstrap();
+/* 09 */ PackageJsonLoader.bootstrap();

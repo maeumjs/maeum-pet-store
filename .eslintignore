@@ -17,5 +17,6 @@ package-lock.json
 jest.config.js
 
 # types
+src/database/TypeORMLogger.ts
 src/@types/json-schema/index.d.ts
 

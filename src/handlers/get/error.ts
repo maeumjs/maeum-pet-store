@@ -1,6 +1,10 @@
 import { ConfigContainer } from '#/configs/ConfigContainer';
 import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
-import { ApiError } from '@maeum/error-controller';
+import {
+  ApiError,
+  ApiErrorJsonSchema,
+  ApiValidationErrorJsonSchema,
+} from '@maeum/error-controller';
 import { I18nController, type II18nParameters } from '@maeum/i18n-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
@@ -20,8 +24,8 @@ export const option: RouteShorthandOptions = {
     },
     response: {
       200: { $ref: 'IReplyHealthDto' },
-      // 400: ApiErrorJsonSchema,
-      // 500: ApiErrorJsonSchema,
+      400: ApiValidationErrorJsonSchema,
+      500: ApiErrorJsonSchema,
     },
   },
 };

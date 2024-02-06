@@ -11,6 +11,7 @@ export interface ICategoryEntity {
    *
    * @maxLength 200
    * @minLength 2
+   * @pattern ^[a-zA-Z0-9_-]+$
    */
   name: string;
 }

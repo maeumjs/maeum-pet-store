@@ -26,6 +26,7 @@ export function getPetStoreMysql() {
     username,
     password,
     synchronize: true,
+    // logger: new TypeORMLogger(),
     entities: [
       CategoryEntity,
       TagEntity,

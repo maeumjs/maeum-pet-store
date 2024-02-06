@@ -1,3 +1,4 @@
+import { PackageJsonLoader } from '#/modules/packages/PackageJsonLoader';
 import type { FastifyDynamicSwaggerOptions, JSONObject } from '@fastify/swagger';
 
 function getReferenceId(json: JSONObject, index: number): string {
@@ -17,9 +18,9 @@ export function swaggerConfig(): FastifyDynamicSwaggerOptions {
   return {
     openapi: {
       info: {
-        title: 'Maeum boilerplate',
-        description: 'Maeum boilerplate Swagger Document',
-        version: '0.2.0',
+        title: PackageJsonLoader.it.packages.name ?? '',
+        description: PackageJsonLoader.it.packages.description ?? '',
+        version: PackageJsonLoader.it.packages.version ?? '1.0.0',
       },
     },
     refResolver: {
