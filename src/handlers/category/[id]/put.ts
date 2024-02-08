@@ -24,7 +24,7 @@ export const option: RouteShorthandOptions = {
   },
 };
 
-export default async function handler(
+export async function handler(
   req: FastifyRequest<{
     Querystring: IPutCategoryQuerystringDto;
     Params: IPutCategoryParamsDto;

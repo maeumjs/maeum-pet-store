@@ -22,7 +22,7 @@ export const option: RouteShorthandOptions = {
   },
 };
 
-export default async function handler(
+export async function handler(
   req: FastifyRequest<{ Querystring: IPostCategoryQuerystringDto; Body: IPostCategoryBodyDto }>,
 ) {
   const category = await create({ name: req.body.name });

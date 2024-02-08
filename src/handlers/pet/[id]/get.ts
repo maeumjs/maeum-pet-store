@@ -1,5 +1,5 @@
-import type { IGetTagParamsDto, IGetTagQuerystringDto } from '#/dto/v1/tag/IGetTag';
-import { read } from '#/repository/tag';
+import type { IGetPetParamsDto, IGetPetQuerystringDto } from '#/dto/v1/pet/IGetPet';
+import { read } from '#/repository/pet';
 import {
   ApiError,
   ApiErrorJsonSchema,
@@ -10,29 +10,29 @@ import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
   schema: {
-    tags: ['Tag'],
-    summary: 'Read Tag',
-    operationId: 'read-tag',
-    description: 'Read Tag using id',
-    querystring: { $ref: 'IGetTagQuerystringDto' },
-    params: { $ref: 'IGetTagParamsDto' },
+    tags: ['Pet'],
+    summary: 'Read Pet',
+    operationId: 'read-pet',
+    description: 'Read Pet using id',
+    querystring: { $ref: 'IGetPetQuerystringDto' },
+    params: { $ref: 'IGetPetParamsDto' },
     response: {
-      200: { $ref: 'ITagDto' },
+      200: { $ref: 'IPetDto' },
       400: ApiValidationErrorJsonSchema,
       500: ApiErrorJsonSchema,
     },
   },
 };
 
-export default async function handler(
-  req: FastifyRequest<{ Querystring: IGetTagQuerystringDto; Params: IGetTagParamsDto }>,
+export async function handler(
+  req: FastifyRequest<{ Querystring: IGetPetQuerystringDto; Params: IGetPetParamsDto }>,
 ) {
-  const category = await read(req.query, req.params);
+  const pet = await read(req.query, req.params);
 
-  if (category == null) {
+  if (pet == null) {
     throw new ApiError({
       i18n: {
-        phrase: 'pet-store.not-found-tag',
+        phrase: 'pet-store.not-found-pet',
         option: { id: req.params.id },
       } satisfies II18nParameters,
       status: 404,
@@ -44,5 +44,5 @@ export default async function handler(
     });
   }
 
-  return category;
+  return pet;
 }

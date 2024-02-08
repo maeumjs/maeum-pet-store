@@ -16,10 +16,10 @@ export async function create(
   source: string,
   hash: string,
 ) {
-  const pet = await readPet(querystring, { id: params.petId });
+  const pet = await readPet(querystring, { id: params.id });
 
   if (pet == null) {
-    throw new Error(`Cannot found pet: ${params.petId}`);
+    throw new Error(`Cannot found pet: ${params.id}`);
   }
 
   const imageRepository = DBContainer.it

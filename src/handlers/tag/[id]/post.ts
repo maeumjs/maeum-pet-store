@@ -19,7 +19,7 @@ export const option: RouteShorthandOptions = {
   },
 };
 
-export default async function handler(
+export async function handler(
   req: FastifyRequest<{ Querystring: IPostTagQuerystringDto; Body: IPostTagBodyDto }>,
 ) {
   const tag = await create({ name: req.body.name });

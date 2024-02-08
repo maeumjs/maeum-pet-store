@@ -7,7 +7,7 @@ import type { MultipartFile } from '@fastify/multipart';
 export interface IPostUploadImagePetQuerystringDto extends ITid {}
 
 export interface IPostUploadImagePetParamDto {
-  petId: IPetEntity['id'];
+  id: IPetEntity['id'];
 }
 
 export interface IPostUploadImagePetBodyDto {

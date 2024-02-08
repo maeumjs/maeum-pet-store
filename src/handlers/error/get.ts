@@ -30,7 +30,7 @@ export const option: RouteShorthandOptions = {
   },
 };
 
-export default async function errorHandler(
+export async function handler(
   req: FastifyRequest<{ Querystring: { ee?: string; code?: string; pe?: string } }>,
 ) {
   const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);

@@ -14,7 +14,7 @@ export class TypeORMLogger implements Logger {
   /**
    * Logs query and parameters used in it.
    */
-  logQuery(query: string, _parameters?: any[], _queryRunner?: QueryRunner): any {
+  logQuery(_query: string, _parameters?: any[], _queryRunner?: QueryRunner): any {
     const store = AsyncContainer.it.getStore<TidAsyncResource>(executionAsyncId());
     log.$('typeorm TID: ', store?.tid);
     return true;
@@ -24,10 +24,10 @@ export class TypeORMLogger implements Logger {
    * Logs query that is failed.
    */
   logQueryError(
-    error: string | Error,
+    _error: string | Error,
     query: string,
-    parameters?: any[],
-    queryRunner?: QueryRunner,
+    _parameters?: any[],
+    _queryRunner?: QueryRunner,
   ): any {
     log.$(query);
     return true;
@@ -36,7 +36,7 @@ export class TypeORMLogger implements Logger {
   /**
    * Logs query that is slow.
    */
-  logQuerySlow(time: number, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
+  logQuerySlow(time: number, query: string, _parameters?: any[], _queryRunner?: QueryRunner): any {
     log.$(time, query);
     return true;
   }
@@ -44,7 +44,7 @@ export class TypeORMLogger implements Logger {
   /**
    * Logs events from the schema build process.
    */
-  logSchemaBuild(message: string, queryRunner?: QueryRunner): any {
+  logSchemaBuild(message: string, _queryRunner?: QueryRunner): any {
     log.$(message);
     return true;
   }
@@ -52,7 +52,7 @@ export class TypeORMLogger implements Logger {
   /**
    * Logs events from the migrations run process.
    */
-  logMigration(message: string, queryRunner?: QueryRunner): any {
+  logMigration(message: string, _queryRunner?: QueryRunner): any {
     log.$(message);
     return true;
   }
@@ -61,7 +61,7 @@ export class TypeORMLogger implements Logger {
    * Perform logging using given logger, or by default to the console.
    * Log has its own level and message.
    */
-  log(level: 'log' | 'info' | 'warn', message: any, queryRunner?: QueryRunner): any {
+  log(_level: 'log' | 'info' | 'warn', message: any, _queryRunner?: QueryRunner): any {
     log.$(message);
     return true;
   }

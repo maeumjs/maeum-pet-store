@@ -24,7 +24,7 @@ export const option: RouteShorthandOptions = {
   },
 };
 
-export default async function healthHandler(req: FastifyRequest) {
+export async function handler(req: FastifyRequest) {
   const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
   const tid = requestContext.get('tid');
   const store = AsyncContainer.getStore<TidAsyncResource>(executionAsyncId());
