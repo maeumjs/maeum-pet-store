@@ -1,6 +1,11 @@
+import { deleteById } from '#/databases/repository/v1/pet/deleteById';
+import { selectById } from '#/databases/repository/v1/pet/selectById';
 import type { IDeletePetParamsDto, IDeletePetQuerystringDto } from '#/dto/v1/pet/IDeletePet';
-import { del } from '#/repository/pet';
-import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
+import {
+  ApiError,
+  ApiErrorJsonSchema,
+  ApiValidationErrorJsonSchema,
+} from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
@@ -25,6 +30,13 @@ export async function handler(
     Params: IDeletePetParamsDto;
   }>,
 ) {
-  const pet = await del(req.query, req.params);
+  const pet = await selectById({ id: req.params.id });
+
+  if (pet == null) {
+    throw new ApiError({});
+  }
+
+  await deleteById({ id: req.params.id });
+
   return pet;
 }

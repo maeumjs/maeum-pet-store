@@ -1,0 +1,5 @@
+{
+  "main": {
+    "not-found-category": "cannot found category: %{id}"
+  }
+}

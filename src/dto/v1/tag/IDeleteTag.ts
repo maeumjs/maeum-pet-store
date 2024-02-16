@@ -1,4 +1,4 @@
-import type { ITagEntity } from '#/database/interfaces/ITagEntity';
+import type { ITagEntity } from '#/databases/interfaces/ITagEntity';
 import type { ITid } from '#/dto/common/ITid';
 
 export interface IDeleteTagQuerystringDto extends ITid {}

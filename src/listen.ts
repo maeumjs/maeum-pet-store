@@ -1,6 +1,6 @@
 import { CronContainer } from '#/cron/CronContainer';
-import { DBContainer } from '#/database/DBContainer';
-import { ServerContainer } from '#/server/ServerContainer';
+import { DBContainer } from '#/databases/DBContainer';
+import { ServerContainer } from '#/servers/ServerContainer';
 import { isError } from 'my-easy-fp';
 
 const listen = async () => {

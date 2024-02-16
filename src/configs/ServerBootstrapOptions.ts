@@ -1,9 +1,16 @@
+import { CE_RUN_MODE } from '#/configs/const-enum/CE_RUN_MODE';
 import routeMap from '#/handlers/route-map';
 import { CronErrorHandler } from '#/modules/error/CronErrorHandler';
 import { TypeORMErrorHandler } from '#/modules/error/TypeORMErrorHandler';
 import type { IErrorControllerOption } from '@maeum/error-controller';
 import { I18nController, pt, ptu, type II18nControllerOption } from '@maeum/i18n-controller';
-import { getRoutePathKey, type IWinstonLoggingControllerOption } from '@maeum/logging-controller';
+import {
+  CE_LOGGING_ACTION_CODE,
+  createConsoleTransport,
+  createFileTransport,
+  getRoutePathKey,
+  type IWinstonLoggingControllerOption,
+} from '@maeum/logging-controller';
 import type { ISchemaControllerBootstrapOption } from '@maeum/schema-controller';
 import { getCwd } from '@maeum/tools';
 import ajvFormat from 'ajv-formats';
@@ -38,12 +45,36 @@ export const ServerBootstrapOptions = {
   } satisfies II18nControllerOption,
   logger: {
     winston: {
-      develop: () =>
+      getEnableDebugMessage: () =>
         getRunMode(process.env.RUN_MODE) !== 'production' &&
         getRunMode(process.env.RUN_MODE) !== 'stage',
+      defaultAppName: 'api',
+      loggers: (() => {
+        const runMode = getRunMode(process.env.RUN_MODE);
+        switch (runMode) {
+          case CE_RUN_MODE.DEVELOP:
+          case CE_RUN_MODE.QA:
+            return { api: { getOptions: () => ({ transports: [createConsoleTransport()] }) } };
+          // production
+          case CE_RUN_MODE.STAGE:
+          case CE_RUN_MODE.PRODUCTION:
+            return { api: { getOptions: () => ({ transports: [createConsoleTransport()] }) } };
+          // local
+          default:
+            return { api: { getOptions: () => ({ transports: [createFileTransport()] }) } };
+        }
+      })(),
     },
     request: {
       isReplyPayloadLogging: true,
+      contents: {
+        default: {
+          reply: {
+            headers: CE_LOGGING_ACTION_CODE.COMPRESS,
+            payload: CE_LOGGING_ACTION_CODE.COMPRESS,
+          },
+        },
+      },
       includes: new Map<string, boolean>(
         Array.from(routeMap.values())
           .map((routeInfo) => Array.from(routeInfo.values()))
@@ -51,9 +82,36 @@ export const ServerBootstrapOptions = {
           .map((routeInfo) => [getRoutePathKey(routeInfo), true]),
       ),
     },
+    curl: {
+      curl: {
+        prettify: false,
+        excludeHeaders: [
+          'sec-ch-ua',
+          'sec-ch-ua-mobile',
+          'sec-ch-ua-platform',
+          'sec-fetch-site',
+          'sec-fetch-mode',
+          'sec-fetch-dest',
+        ],
+      },
+    },
   } satisfies IWinstonLoggingControllerOption,
   errors: {
-    encryption: true,
+    encryption: (() => {
+      const runMode = getRunMode(process.env.RUN_MODE);
+      switch (runMode) {
+        case CE_RUN_MODE.DEVELOP:
+        case CE_RUN_MODE.QA:
+          return false;
+        // production
+        case CE_RUN_MODE.STAGE:
+        case CE_RUN_MODE.PRODUCTION:
+          return true;
+        // local
+        default:
+          return false;
+      }
+    })(),
     translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
     fallbackMessage: () => pt('en', 'common.main.error'),
     includeDefaultHandler: true,

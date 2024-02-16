@@ -7,7 +7,7 @@ module.exports = {
       watch: false,
       max_memory_restart: '2G',
       autorestart: true,
-      node_args: '--enable-source-maps -r ./dist/loader',
+      node_args: '--enable-source-maps --no-warnings -r ./dist/loader',
       exp_backoff_restart_delay: 200,
       wait_ready: true,
       kill_timeout: 6000,

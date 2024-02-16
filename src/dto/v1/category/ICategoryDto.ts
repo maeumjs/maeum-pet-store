@@ -1,4 +1,4 @@
-import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
+import type { ICategoryEntity } from '#/databases/interfaces/ICategoryEntity';
 
 /**
  * CategoryDto of Pet, Store

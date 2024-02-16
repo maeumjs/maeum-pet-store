@@ -26,7 +26,6 @@ export class ConfigContainer {
     const filename = `config.${runMode}.json`;
     const configBuf = fs.readFileSync(path.join(dirname, filename));
     const parsed = parse(configBuf.toString()) as IConfiguration;
-
     const validator = SchemaController.it.getValidator('IConfiguration');
     const validationResult = validator(parsed);
 

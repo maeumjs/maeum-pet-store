@@ -1,4 +1,4 @@
-import type { ICategoryEntity } from '#/database/interfaces/ICategoryEntity';
+import type { ICategoryEntity } from '#/databases/interfaces/ICategoryEntity';
 import type { ITid } from '#/dto/common/ITid';
 
 export interface IPostCategoryQuerystringDto extends ITid {}

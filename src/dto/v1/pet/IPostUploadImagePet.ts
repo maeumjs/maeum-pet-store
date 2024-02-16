@@ -1,5 +1,5 @@
-import type { IImageEntity } from '#/database/interfaces/IImageEntity';
-import type { IPetEntity } from '#/database/interfaces/IPetEntity';
+import type { IImageEntity } from '#/databases/interfaces/IImageEntity';
+import type { IPetEntity } from '#/databases/interfaces/IPetEntity';
 import type { ITid } from '#/dto/common/ITid';
 import type { TFileUpload } from '#/dto/common/TFileUpload';
 import type { MultipartFile } from '@fastify/multipart';

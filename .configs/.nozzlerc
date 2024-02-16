@@ -4,19 +4,13 @@
 
   // tsconfig.json file path
   "project": "tsconfig.json",
-
-  // json-schema save format
-  //
-  // * json: json object
-  // * string: plain string
-  // * base64: plain string > base64
-  "format": "json",
-
+  
   // use checkbox with multiple selections
   "multiple": true,
 
-  // schema file listing filename
-  "list-file": ".nozzlefiles",
+  "include": ["src/dto/**/*.ts", "src/configs/interfaces/*.ts"],
+
+  // "rootDirs": ["src/dto", "src/configs/interfaces"],
 
   "cli-logo": true,
 

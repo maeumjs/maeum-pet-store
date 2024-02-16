@@ -1,5 +1,5 @@
+import { update } from '#/databases/repository/tag';
 import type { IPutTagBodyDto, IPutTagParamsDto, IPutTagQuerystringDto } from '#/dto/v1/tag/IPutTag';
-import { update } from '#/repository/tag';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 

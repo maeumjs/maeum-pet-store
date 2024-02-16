@@ -1,5 +1,5 @@
+import { read } from '#/databases/repository/tag';
 import type { IGetTagParamsDto, IGetTagQuerystringDto } from '#/dto/v1/tag/IGetTag';
-import { read } from '#/repository/tag';
 import {
   ApiError,
   ApiErrorJsonSchema,
@@ -7,6 +7,7 @@ import {
 } from '@maeum/error-controller';
 import type { II18nParameters } from '@maeum/i18n-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import httpStatusCodes from 'http-status-codes';
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -35,8 +36,8 @@ export async function handler(
         phrase: 'pet-store.not-found-tag',
         option: { id: req.params.id },
       } satisfies II18nParameters,
-      status: 404,
-      $option: {
+      status: httpStatusCodes.NOT_FOUND,
+      option: {
         logging: {
           message: 'i am additional information',
         },

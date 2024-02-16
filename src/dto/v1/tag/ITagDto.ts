@@ -1,4 +1,4 @@
-import type { ITagEntity } from '#/database/interfaces/ITagEntity';
+import type { ITagEntity } from '#/databases/interfaces/ITagEntity';
 
 /**
  * TagDto of Pet, Store

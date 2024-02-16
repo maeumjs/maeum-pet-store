@@ -1,5 +1,5 @@
 import { ConfigContainer } from '#/configs/ConfigContainer';
-import type { TidAsyncResource } from '#/cron/TidAsyncResource';
+import type { TrackerAsyncResource } from '#/cron/TrackerAsyncResource';
 import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
 import { requestContext } from '@fastify/request-context';
 import { AsyncContainer } from '@maeum/async-context';
@@ -27,7 +27,7 @@ export const option: RouteShorthandOptions = {
 export async function handler(req: FastifyRequest) {
   const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
   const tid = requestContext.get('tid');
-  const store = AsyncContainer.getStore<TidAsyncResource>(executionAsyncId());
+  const store = AsyncContainer.getStore<TrackerAsyncResource>(executionAsyncId());
 
   log.$('request id: ', tid, store?.tid);
 

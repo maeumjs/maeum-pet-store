@@ -1,5 +1,5 @@
+import { selectById } from '#/databases/repository/v1/pet/selectById';
 import type { IGetPetParamsDto, IGetPetQuerystringDto } from '#/dto/v1/pet/IGetPet';
-import { read } from '#/repository/pet';
 import {
   ApiError,
   ApiErrorJsonSchema,
@@ -7,6 +7,7 @@ import {
 } from '@maeum/error-controller';
 import type { II18nParameters } from '@maeum/i18n-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import httpStatusCodes from 'http-status-codes';
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -27,7 +28,7 @@ export const option: RouteShorthandOptions = {
 export async function handler(
   req: FastifyRequest<{ Querystring: IGetPetQuerystringDto; Params: IGetPetParamsDto }>,
 ) {
-  const pet = await read(req.query, req.params);
+  const pet = await selectById({ id: req.params.id });
 
   if (pet == null) {
     throw new ApiError({
@@ -35,8 +36,8 @@ export async function handler(
         phrase: 'pet-store.not-found-pet',
         option: { id: req.params.id },
       } satisfies II18nParameters,
-      status: 404,
-      $option: {
+      status: httpStatusCodes.NOT_FOUND,
+      option: {
         logging: {
           message: 'i am additional information',
         },

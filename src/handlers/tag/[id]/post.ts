@@ -1,5 +1,5 @@
+import { create } from '#/databases/repository/tag';
 import type { IPostTagBodyDto, IPostTagQuerystringDto } from '#/dto/v1/tag/IPostTag';
-import { create } from '#/repository/tag';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 

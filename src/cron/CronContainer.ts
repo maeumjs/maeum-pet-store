@@ -1,13 +1,12 @@
 /* eslint-disable no-console, class-methods-use-this */
 // import { CronError } from '#/cron/CronError';
-import { AsyncContainer } from '@maeum/async-context';
 import { ErrorController } from '@maeum/error-controller';
 import { WinstonContainer } from '@maeum/logging-controller';
 import { CronJob } from 'cron';
 import { getRandomRangeInt, isError } from 'my-easy-fp';
-import { AsyncLocalStorage, executionAsyncId } from 'node:async_hooks';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
-import { TidAsyncResource } from './TidAsyncResource';
+import { TrackerAsyncResource } from './TrackerAsyncResource';
 
 const log = WinstonContainer.l(__filename);
 
@@ -59,7 +58,7 @@ export class CronContainer {
 
       this.#store.run(store, () => {
         try {
-          const asyncResource = new TidAsyncResource(tid);
+          const asyncResource = new TrackerAsyncResource(tid, undefined);
           asyncResource.runInAsyncScope(handle, this);
         } catch (caught) {
           const err = isError(caught, new Error('unknown error'));
@@ -90,10 +89,7 @@ export class CronContainer {
   handle() {
     const random = getRandomRangeInt(1, 1000);
     const divider = 3;
-    const id = executionAsyncId();
-    const store = AsyncContainer.it.getStore<{ tid: string }>(id);
 
-    log.$(`cron task tid: ${store?.tid}`);
     log.$(`[${random}, ${random % divider}]cron task start: `, new Date());
 
     // if (random % divider === 0) {

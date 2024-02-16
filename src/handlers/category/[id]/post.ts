@@ -1,8 +1,10 @@
+import { insert as insertCategory } from '#/databases/repository/v1/categories/insert';
+import { selectByIdOrThrow as selectCategoryByIdOrThrow } from '#/databases/repository/v1/categories/selectByIdOrThrow';
 import type {
   IPostCategoryBodyDto,
   IPostCategoryQuerystringDto,
 } from '#/dto/v1/category/IPostCategory';
-import { create } from '#/repository/category';
+import { fromEntity as transformCategoryFromEntity } from '#/transforms/v1/categories/fromEntity';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
@@ -23,8 +25,13 @@ export const option: RouteShorthandOptions = {
 };
 
 export async function handler(
-  req: FastifyRequest<{ Querystring: IPostCategoryQuerystringDto; Body: IPostCategoryBodyDto }>,
+  req: FastifyRequest<{
+    Querystring: IPostCategoryQuerystringDto;
+    Body: IPostCategoryBodyDto;
+  }>,
 ) {
-  const category = await create({ name: req.body.name });
-  return category;
+  const result = await insertCategory({ values: req.body });
+  const category = await selectCategoryByIdOrThrow({ id: result.id }, { master: true });
+
+  return transformCategoryFromEntity(category);
 }

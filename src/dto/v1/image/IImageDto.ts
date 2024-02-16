@@ -1,4 +1,4 @@
-import type { IImageEntity } from '#/database/interfaces/IImageEntity';
+import type { IImageEntity } from '#/databases/interfaces/IImageEntity';
 
 /**
  * CategoryDto of Pet, Store

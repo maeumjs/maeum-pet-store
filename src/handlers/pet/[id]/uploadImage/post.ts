@@ -1,9 +1,12 @@
+import { CE_IMAGE_REFERENCE_ENTITY } from '#/databases/const-enum/CE_IMAGE_REFERENCE_ENTITY';
+import { getInsertedIdOrThrow } from '#/databases/modules/getInsertedId';
+import { insert } from '#/databases/repository/v1/images/insert';
+import { selectById } from '#/databases/repository/v1/images/selectById';
 import type {
   IPostUploadImagePetBodyMultipartDto,
   IPostUploadImagePetParamDto,
   IPostUploadImagePetQuerystringDto,
 } from '#/dto/v1/pet/IPostUploadImagePet';
-import { create } from '#/repository/image';
 import type { MultipartFile } from '@fastify/multipart';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import { WinstonContainer } from '@maeum/logging-controller';
@@ -87,7 +90,16 @@ export async function handler(
 
   log.$('file size: ', buf.length);
 
-  const image = await create(req.query, req.params, req.body, source, hash);
+  const result = await insert({
+    refId: req.params.id,
+    metadata: { filename: req.body.$file.filename },
+    entity: CE_IMAGE_REFERENCE_ENTITY.PET,
+    source,
+    hash,
+  });
+
+  const id = getInsertedIdOrThrow(result);
+  const image = await selectById({ id: `${id}` });
 
   return image;
 }

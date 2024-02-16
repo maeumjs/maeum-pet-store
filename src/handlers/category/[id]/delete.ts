@@ -1,8 +1,10 @@
+import { deleteById as deleteCategoryById } from '#/databases/repository/v1/categories/deleteById';
+import { selectByIdOrThrow as selectCategoryByIdOrThrow } from '#/databases/repository/v1/categories/selectByIdOrThrow';
 import type {
   IDeleteCategoryParamsDto,
   IDeleteCategoryQuerystringDto,
 } from '#/dto/v1/category/IDeleteCategory';
-import { del } from '#/repository/category';
+import { fromEntity as transformCategoryfromEntity } from '#/transforms/v1/categories/fromEntity';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
@@ -10,7 +12,7 @@ export const option: RouteShorthandOptions = {
   schema: {
     tags: ['Category'],
     summary: 'Delete Category',
-    operationId: 'delete-category',
+    operationId: 'delete-category-by-id',
     description: 'Delete Category using id',
     querystring: { $ref: 'IGetCategoryQuerystringDto' },
     params: { $ref: 'IGetCategoryParamsDto' },
@@ -28,6 +30,7 @@ export async function handler(
     Params: IDeleteCategoryParamsDto;
   }>,
 ) {
-  const category = await del(req.query, req.params);
-  return category;
+  const category = await selectCategoryByIdOrThrow(req.params);
+  await deleteCategoryById(req.params);
+  return transformCategoryfromEntity(category);
 }
