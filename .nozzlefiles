@@ -1,6 +1,0 @@
-# include data transfer object
-src/dto/**/*.ts
-
-# include configuration object
-src/configs/interfaces/IConfiguration.ts
-

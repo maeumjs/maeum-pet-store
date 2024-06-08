@@ -1,8 +1,8 @@
-import { DBContainer } from '#/databases/DBContainer';
-import { CE_DATASORUCE_NAME } from '#/databases/const-enum/CE_DATASORUCE_NAME';
 import type { CE_IMAGE_REFERENCE_ENTITY } from '#/databases/const-enum/CE_IMAGE_REFERENCE_ENTITY';
 import { ImageEntity } from '#/databases/entities/ImageEntity';
 import type { IImageEntity } from '#/databases/interfaces/IImageEntity';
+import { CE_DI } from '#/modules/di/CE_DI';
+import { container } from '#/modules/di/container';
 import { getAsyncTid } from '#/modules/logging/store/getAsyncTid';
 import { safeStringify } from '@maeum/tools';
 
@@ -14,10 +14,8 @@ export async function insert(data: {
   hash: IImageEntity['hash'];
 }) {
   const tid = getAsyncTid();
-  const qb = DBContainer.it
-    .ds(CE_DATASORUCE_NAME.PET_STORE)
-    .getRepository(ImageEntity)
-    .createQueryBuilder();
+  const ds = container.resolve(CE_DI.PET_DATA_SOURCE);
+  const qb = ds.getRepository(ImageEntity).createQueryBuilder();
 
   const result = await qb
     .insert()

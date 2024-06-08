@@ -1,7 +1,7 @@
-import { DBContainer } from '#/databases/DBContainer';
-import { CE_DATASORUCE_NAME } from '#/databases/const-enum/CE_DATASORUCE_NAME';
 import { PetTagMTMEntity } from '#/databases/entities/PetTagMTMEntity';
 import type { IPetTagMTMEntity } from '#/databases/interfaces/IPetTagMTMEntity';
+import { CE_DI } from '#/modules/di/CE_DI';
+import { container } from '#/modules/di/container';
 import { getAsyncTid } from '#/modules/logging/store/getAsyncTid';
 import type { EntityManager } from 'typeorm';
 
@@ -11,9 +11,7 @@ export async function inserts(
 ) {
   const tid = getAsyncTid();
   const ds =
-    options?.transation != null
-      ? options.transation
-      : DBContainer.it.ds(CE_DATASORUCE_NAME.PET_STORE);
+    options?.transation != null ? options.transation : container.resolve(CE_DI.PET_DATA_SOURCE);
 
   const result = await ds
     .getRepository(PetTagMTMEntity)

@@ -1,7 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { CronError } from '#/cron/CronError';
+import { container } from '#/modules/di/container';
 import { ErrorHandler, getSourceLocation } from '@maeum/error-controller';
-import { EncryptContiner, noop, safeStringify } from '@maeum/tools';
+import { CE_DI as TOOLS, noop, safeStringify } from '@maeum/tools';
 import { isError } from 'my-easy-fp';
 
 export class CronErrorHandler extends ErrorHandler<CronError> {
@@ -30,14 +31,12 @@ export class CronErrorHandler extends ErrorHandler<CronError> {
     message?: string;
     info?: string | object;
   } {
+    const encryptioner = container.resolve(TOOLS.ENCRYPTIONER);
     if (isError(args) != null && args instanceof CronError) {
       const err = args;
       const code = getSourceLocation(err);
       const message = this.getMessage(err, { message: err.message });
-      const encrypted =
-        this.option.encryption && EncryptContiner.isBootstrap
-          ? EncryptContiner.it.encrypt(code)
-          : code;
+      const encrypted = this.option.encryption ? encryptioner.encrypt(code) : code;
 
       return { code: encrypted, message };
     }
@@ -45,10 +44,7 @@ export class CronErrorHandler extends ErrorHandler<CronError> {
     const err = new Error('unknown error raised');
     const code = getSourceLocation(err);
     const message = this.getMessage(err, { message: err.message });
-    const encrypted =
-      this.option.encryption && EncryptContiner.isBootstrap
-        ? EncryptContiner.it.encrypt(code)
-        : code;
+    const encrypted = this.option.encryption ? encryptioner.encrypt(code) : code;
 
     return { code: encrypted, message };
   }

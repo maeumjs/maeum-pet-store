@@ -1,4 +1,3 @@
-import { ConfigContainer } from '#/configs/ConfigContainer';
 import { CategoryEntity } from '#/databases/entities/CategoryEntity';
 import { ImageEntity } from '#/databases/entities/ImageEntity';
 import { PetCategoryMTMEntity } from '#/databases/entities/PetCategoryMTMEntity';
@@ -6,21 +5,24 @@ import { PetEntity } from '#/databases/entities/PetEntity';
 import { PetTagMTMEntity } from '#/databases/entities/PetTagMTMEntity';
 import { TagEntity } from '#/databases/entities/TagEntity';
 import { TypeORMLogger } from '#/databases/logging/TypeORMLogger';
+import { CE_DI } from '#/modules/di/CE_DI';
+import { container } from '#/modules/di/container';
 import { CE_LOG_ID } from '#/modules/logging/const-enum/CE_LOG_ID';
-import { WinstonContainer } from '@maeum/logging-controller';
+import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
 import { randomUUID } from 'crypto';
 import { differenceInMilliseconds } from 'date-fns';
 import httpStatusCodes from 'http-status-codes';
 import { DataSource } from 'typeorm';
 import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
-const log = WinstonContainer.l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.WINSTON_LOGGERS).l(__filename);
 
 export function getPetStoreMysql() {
+  const config = container.resolve(CE_DI.CONFIG);
   const start = new Date();
   const username = process.env.DB_PET_STORE_USERNAME;
   const password = process.env.DB_PET_STORE_PASSWORD;
-  const mysql = ConfigContainer.it.config.mysql['pet-store'];
+  const mysql = config.mysql['pet-store'];
 
   if (username == null || password == null) {
     throw new Error(`Please specify database username, password: ${username}, ${password}`);
@@ -48,11 +50,13 @@ export function getPetStoreMysql() {
   const ds = new DataSource(option);
   const end = new Date();
 
+  const d = differenceInMilliseconds(end, start);
+  const t = randomUUID();
   log.info({
     id: CE_LOG_ID.DB_CONNECTION,
     status: httpStatusCodes.OK,
-    duration: differenceInMilliseconds(end, start),
-    tid: randomUUID(),
+    duration: d,
+    tid: t,
     body: {
       ...option,
     },

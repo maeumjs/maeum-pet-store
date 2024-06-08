@@ -7,10 +7,11 @@ import type {
   IPostUploadImagePetParamDto,
   IPostUploadImagePetQuerystringDto,
 } from '#/dto/v1/pet/IPostUploadImagePet';
+import { container } from '#/modules/di/container';
 import type { MultipartFile } from '@fastify/multipart';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
-import { WinstonContainer } from '@maeum/logging-controller';
-import { SchemaController } from '@maeum/schema-controller';
+import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
+import { CE_DI as SCHEMA_CONTROLLER } from '@maeum/schema-controller';
 import type {
   FastifyReply,
   FastifyRequest,
@@ -25,7 +26,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
 import type { SetOptional } from 'type-fest';
 
-const log = WinstonContainer.l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(__filename);
 
 export const option: RouteShorthandOptions<
   RawServerBase,
@@ -39,6 +40,12 @@ export const option: RouteShorthandOptions<
     operationId: 'upload-pet-image',
     description: 'upload an image for Pet',
     consumes: ['multipart/form-data'],
+    // 아래처럼 단순 문자열만 전달하면, Fastify에서 알아서 이걸 형태를 바꿔 버린다.
+    // querystring: 'IPostUploadImagePetQuerystringDto' 이 값을
+    // { type: "object", properties: "IPostUploadImagePetQuerystringDto", } 이렇게 바꿔 버린다
+    // 그래서 단순 문자열을 전달하면 오류가 발생한다
+    // 심지어 { $id: 'IPostUploadImagePetQuerystringDto' }, 이것도 마음대로 바꾼다
+    // { type: "object", properties: { $id: 'IPostUploadImagePetQuerystringDto' } } 이렇게;;;
     querystring: { $ref: 'IPostUploadImagePetQuerystringDto' },
     params: { $ref: 'IPostUploadImagePetParamDto' },
     body: { $ref: 'IPostUploadImagePetBodyDto' },
@@ -54,10 +61,11 @@ export const option: RouteShorthandOptions<
     done: HookHandlerDoneFunction,
   ) => {
     try {
+      const ajv = container.resolve(SCHEMA_CONTROLLER.AJV);
       const { body } = req;
       body.$file = body.file as unknown as MultipartFile;
       body.file = body.$file.filename;
-      const result = SchemaController.it.getValidator('fileUploadSchema')(body.$file);
+      const result = ajv.getValidatorOrThrow('fileUploadSchema')(body.$file);
       if (!result) {
         throw new Error('validation error');
       }

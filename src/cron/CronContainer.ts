@@ -1,34 +1,16 @@
 /* eslint-disable no-console, class-methods-use-this */
-// import { CronError } from '#/cron/CronError';
-import { ErrorController } from '@maeum/error-controller';
-import { WinstonContainer } from '@maeum/logging-controller';
+import { container } from '#/modules/di/container';
+import { wrap } from '@maeum/error-controller';
+import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
 import { CronJob } from 'cron';
 import { getRandomRangeInt, isError } from 'my-easy-fp';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
 import { TrackerAsyncResource } from './TrackerAsyncResource';
 
-const log = WinstonContainer.l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(__filename);
 
 export class CronContainer {
-  static #it: CronContainer;
-
-  static get it(): Readonly<CronContainer> {
-    return this.#it;
-  }
-
-  static #isBootstrap: boolean = false;
-
-  static get isBootstrap(): Readonly<boolean> {
-    return this.#isBootstrap;
-  }
-
-  static async bootstrap() {
-    CronContainer.#it = new CronContainer();
-    CronContainer.#isBootstrap = true;
-    // CronContainer.#it.start();
-  }
-
   #schedule: string;
 
   #job: CronJob<null, CronContainer>;
@@ -49,7 +31,7 @@ export class CronContainer {
     this.#start = false;
     this.#runOnInit = false;
 
-    const handle = ErrorController.wrap(this.handle.bind(this));
+    const handle = wrap(container, this.handle.bind(this));
 
     const withStore = () => {
       const tid = randomUUID();

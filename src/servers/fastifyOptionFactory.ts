@@ -1,5 +1,6 @@
-import { SchemaController } from '@maeum/schema-controller';
-import { getGenReqIdHandler } from '@maeum/tools';
+import { container } from '#/modules/di/container';
+import { CE_DI as SCHEMA_CONTROLLER } from '@maeum/schema-controller';
+import { getGenReqID } from '@maeum/tools';
 import type { FastifyServerOptions } from 'fastify';
 import fastify from 'fastify';
 import type { IncomingMessage, Server, ServerResponse } from 'http';
@@ -23,12 +24,12 @@ export function fastifyOptionFactory() {
   const option: FastifyServerOptions & { serverFactory: THttpServerFactory } = {
     ignoreTrailingSlash: true,
     serverFactory: httpServerFactory,
-    genReqId: getGenReqIdHandler('tid'),
+    genReqId: getGenReqID('tid'),
   };
 
-  const server = fastify<Server, IncomingMessage, ServerResponse>(option);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-  server.setSchemaController(SchemaController.it.getFastifyController(server as any) as any);
+  const server = fastify(option);
+  const schemaController = container.resolve(SCHEMA_CONTROLLER.SCHEMA);
+  server.setSchemaController(schemaController.getFastifyController(server));
 
   return { fastify: server, option };
 }

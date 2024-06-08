@@ -18,9 +18,9 @@ export const option: RouteShorthandOptions = {
     querystring: { $ref: 'IGetPetQuerystringDto' },
     params: { $ref: 'IGetPetParamsDto' },
     response: {
-      200: { $ref: 'IPetDto' },
-      400: ApiValidationErrorJsonSchema,
-      500: ApiErrorJsonSchema,
+      [httpStatusCodes.OK]: { $ref: 'IPetDto' },
+      [httpStatusCodes.BAD_REQUEST]: ApiValidationErrorJsonSchema,
+      [httpStatusCodes.INTERNAL_SERVER_ERROR]: ApiErrorJsonSchema,
     },
   },
 };

@@ -1,5 +1,4 @@
 /**
- * @nozzleIgnore
  * @asType string
  * @format binary
  */

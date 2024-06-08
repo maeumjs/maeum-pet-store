@@ -1,5 +1,6 @@
 import { deleteById as deleteCategoryById } from '#/databases/repository/v1/categories/deleteById';
 import { selectByIdOrThrow as selectCategoryByIdOrThrow } from '#/databases/repository/v1/categories/selectByIdOrThrow';
+import type { ICategoryDto } from '#/dto/v1/category/ICategoryDto';
 import type {
   IDeleteCategoryParamsDto,
   IDeleteCategoryQuerystringDto,
@@ -29,7 +30,7 @@ export async function handler(
     Querystring: IDeleteCategoryQuerystringDto;
     Params: IDeleteCategoryParamsDto;
   }>,
-) {
+): Promise<ICategoryDto> {
   const category = await selectCategoryByIdOrThrow(req.params);
   await deleteCategoryById(req.params);
   return transformCategoryfromEntity(category);

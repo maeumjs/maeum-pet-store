@@ -1,12 +1,13 @@
-import { ConfigContainer } from '#/configs/ConfigContainer';
-import { DotenvContainer } from '#/configs/DotenvContainer';
-import { ServerBootstrapOptions } from '#/configs/ServerBootstrapOptions';
-import { PackageJsonLoader } from '#/modules/packages/PackageJsonLoader';
-import { ErrorController } from '@maeum/error-controller';
-import { I18nController } from '@maeum/i18n-controller';
-import { bootstrapWinston } from '@maeum/logging-controller';
-import { SchemaController } from '@maeum/schema-controller';
-import { EncryptContiner } from '@maeum/tools';
+import { getServerBootstrapOptions } from '#/configs/ServerBootstrapOptions';
+import { container } from '#/modules/di/container';
+import { makeConfig } from '#/modules/makers/makeConfig';
+import { makeDotEnv } from '#/modules/makers/makeDotEnv';
+import { makePackageJson } from '#/modules/makers/makePackageJson';
+import { makeErrorController } from '@maeum/error-controller';
+import { makeSyncI18nContainer } from '@maeum/i18n-controller';
+import { makeSyncLoggers } from '@maeum/logging-controller';
+import { makeSyncSchemaController } from '@maeum/schema-controller';
+import { makeEncryptioner } from '@maeum/tools';
 
 /**
  * 초기화 순서를 지켜주세요,
@@ -14,11 +15,12 @@ import { EncryptContiner } from '@maeum/tools';
  * ConfigContainer는 SchemaController를 사용합니다
  * EncryptContiner는 DotenvContainer를 사용합니다
  */
-/* 01 */ DotenvContainer.bootstrap();
-/* 02 */ SchemaController.bootstrap(false, ServerBootstrapOptions.schema);
-/* 03 */ ConfigContainer.bootstrap();
-/* 04 */ I18nController.bootstrap(false, ServerBootstrapOptions.i18n);
-/* 05 */ bootstrapWinston(false, ServerBootstrapOptions.logger);
-/* 06 */ ErrorController.bootstrap(ServerBootstrapOptions.errors);
-/* 07 */ EncryptContiner.bootstrap({ key: process.env.ENV_ENCRYPTION_KEY });
-/* 08 */ PackageJsonLoader.bootstrap();
+/* 01 */ makeDotEnv();
+const options = getServerBootstrapOptions(container);
+/* 02 */ makeSyncSchemaController(container, options.schema);
+/* 03 */ makeConfig();
+/* 04 */ makeSyncI18nContainer(container, options.i18n);
+/* 05 */ makeSyncLoggers(container, 'winston', options.loggers);
+/* 06 */ makeErrorController(container, options.errors);
+/* 07 */ makeEncryptioner(container, { key: process.env.ENV_ENCRYPTION_KEY });
+/* 08 */ makePackageJson();

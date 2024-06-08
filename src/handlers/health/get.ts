@@ -1,15 +1,13 @@
-import { ConfigContainer } from '#/configs/ConfigContainer';
-import type { TrackerAsyncResource } from '#/cron/TrackerAsyncResource';
 import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
-import { requestContext } from '@fastify/request-context';
-import { AsyncContainer } from '@maeum/async-context';
+import { CE_DI } from '#/modules/di/CE_DI';
+import { container } from '#/modules/di/container';
+import { getAsyncStoreOrThrow } from '#/modules/logging/store/getAsyncStoreOrThrow';
 import { ApiErrorJsonSchema } from '@maeum/error-controller';
-import { I18nController } from '@maeum/i18n-controller';
-import { WinstonContainer } from '@maeum/logging-controller';
-import { executionAsyncId } from 'async_hooks';
+import { CE_DI as I18N_CONTROLLER } from '@maeum/i18n-controller';
+import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
-const log = WinstonContainer.l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(__filename);
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -24,17 +22,18 @@ export const option: RouteShorthandOptions = {
   },
 };
 
-export async function handler(req: FastifyRequest) {
-  const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
-  const tid = requestContext.get('tid');
-  const store = AsyncContainer.getStore<TrackerAsyncResource>(executionAsyncId());
+export async function handler(_req: FastifyRequest) {
+  const config = container.resolve(CE_DI.CONFIG);
+  const i18n = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+  const store = getAsyncStoreOrThrow();
+  const language = i18n.getLanguageFromRequestHeader(store.lang);
 
-  log.$('request id: ', tid, store?.tid);
+  log.$('request id: ', store.tid);
 
   return {
-    envMode: ConfigContainer.it.config.server.envMode,
-    runMode: ConfigContainer.it.config.server.runMode,
-    port: ConfigContainer.it.config.server.port,
+    envMode: config.server.envMode,
+    runMode: config.server.runMode,
+    port: config.server.port,
     i18n: { language },
   } satisfies IReplyHealthDto;
 }

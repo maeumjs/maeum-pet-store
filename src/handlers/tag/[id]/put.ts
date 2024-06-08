@@ -2,6 +2,7 @@ import { update } from '#/databases/repository/tag';
 import type { IPutTagBodyDto, IPutTagParamsDto, IPutTagQuerystringDto } from '#/dto/v1/tag/IPutTag';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import httpStatusCodes from 'http-status-codes';
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -13,9 +14,9 @@ export const option: RouteShorthandOptions = {
     params: { $ref: 'IPutTagParamsDto' },
     body: { $ref: 'IPutTagBodyDto' },
     response: {
-      200: { $ref: 'ITagDto' },
-      400: ApiValidationErrorJsonSchema,
-      500: ApiErrorJsonSchema,
+      [httpStatusCodes.OK]: { $ref: 'ITagDto' },
+      [httpStatusCodes.BAD_REQUEST]: ApiValidationErrorJsonSchema,
+      [httpStatusCodes.INTERNAL_SERVER_ERROR]: ApiErrorJsonSchema,
     },
   },
 };

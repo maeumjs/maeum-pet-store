@@ -111,3 +111,4 @@ dist/
 resources/configs/store.json
 src/handlers/route-map.ts
 src/handlers/route.ts
+_test/

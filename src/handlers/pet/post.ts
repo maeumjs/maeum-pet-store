@@ -3,6 +3,7 @@ import { selectById } from '#/databases/repository/v1/pet/selectById';
 import type { IPostPetBodyDto, IPostPetQuerystringDto } from '#/dto/v1/pet/IPostPet';
 import { ApiErrorJsonSchema, ApiValidationErrorJsonSchema } from '@maeum/error-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
+import httpStatusCodes from 'http-status-codes';
 
 export const option: RouteShorthandOptions = {
   schema: {
@@ -13,9 +14,9 @@ export const option: RouteShorthandOptions = {
     querystring: { $ref: 'IPostPetQuerystringDto' },
     body: { $ref: 'IPostPetBodyDto' },
     response: {
-      200: { $ref: 'IPetDto' },
-      400: ApiValidationErrorJsonSchema,
-      500: ApiErrorJsonSchema,
+      [httpStatusCodes.OK]: { $ref: 'IPetDto' },
+      [httpStatusCodes.BAD_REQUEST]: ApiValidationErrorJsonSchema,
+      [httpStatusCodes.INTERNAL_SERVER_ERROR]: ApiErrorJsonSchema,
     },
   },
 };

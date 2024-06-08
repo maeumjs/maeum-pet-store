@@ -1,4 +1,5 @@
-import { PackageJsonLoader } from '#/modules/packages/PackageJsonLoader';
+import { CE_DI } from '#/modules/di/CE_DI';
+import { container } from '#/modules/di/container';
 import type { FastifyDynamicSwaggerOptions, JSONObject } from '@fastify/swagger';
 
 function getReferenceId(json: JSONObject, index: number): string {
@@ -16,12 +17,14 @@ function getReferenceId(json: JSONObject, index: number): string {
 
 /** swagger configuration */
 export function swaggerConfig(): FastifyDynamicSwaggerOptions {
+  const packageJson = container.resolve(CE_DI.PACKAGE_JSON);
+
   return {
     openapi: {
       info: {
-        title: PackageJsonLoader.it.packages.name ?? '',
-        description: PackageJsonLoader.it.packages.description ?? '',
-        version: PackageJsonLoader.it.packages.version ?? '1.0.0',
+        title: packageJson.name ?? '',
+        description: packageJson.description ?? '',
+        version: packageJson.version ?? '1.0.0',
       },
     },
     refResolver: {

@@ -4,13 +4,19 @@
 
   // tsconfig.json file path
   "project": "tsconfig.json",
-  
+
   // use checkbox with multiple selections
   "multiple": true,
 
   "include": ["src/dto/**/*.ts", "src/configs/interfaces/*.ts"],
 
-  // "rootDirs": ["src/dto", "src/configs/interfaces"],
+  "rootDirs": ["src"],
+
+  "draft": 7,
+
+  "use-schema-path": false,
+
+  "js-var": false,
 
   "cli-logo": true,
 
@@ -19,6 +25,8 @@
   // ts-json-schema-generator option
   "generatorOption": {
     "additionalProperties": true,
+    "topRef": false,
+    "encodeRefs": true,
     "extraTags": ["datetime-formatex", "example", "int64"]
   }
 }

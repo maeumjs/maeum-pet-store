@@ -1,12 +1,15 @@
 /* eslint-disable class-methods-use-this */
+
 import { getEvaluateQuery } from '#/databases/logging/getEvaluateQuery';
+import { container } from '#/modules/di/container';
 import { CE_LOG_ID } from '#/modules/logging/const-enum/CE_LOG_ID';
-import { WinstonContainer } from '@maeum/logging-controller';
+import { getAsyncTid } from '#/modules/logging/store/getAsyncTid';
+import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
 import httpStatusCodes from 'http-status-codes';
 import { isError, isFalse } from 'my-easy-fp';
 import { AbstractLogger, type LogLevel, type LogMessage, type QueryRunner } from 'typeorm';
 
-const log = WinstonContainer.l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.WINSTON_LOGGERS).l(__filename);
 
 export class TypeORMLogger extends AbstractLogger {
   protected writeLog(
@@ -87,6 +90,7 @@ export class TypeORMLogger extends AbstractLogger {
       id: CE_LOG_ID.DB_QUERY,
       status: httpStatusCodes.OK,
       duration: time,
+      tid: getAsyncTid(),
       body: {
         event: 'query-slow',
         evaluated,

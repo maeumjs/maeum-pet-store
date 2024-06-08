@@ -17,7 +17,7 @@ export interface IPostUploadImagePetBodyDto {
 }
 
 /**
- * @nozzleIgnore
+ * @schema-nozzle-exclude-next
  */
 export interface IPostUploadImagePetBodyMultipartDto {
   additionalMetadata: IImageEntity['metadata'];

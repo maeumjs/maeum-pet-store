@@ -18,9 +18,9 @@ export const option: RouteShorthandOptions = {
     querystring: { $ref: 'IGetTagQuerystringDto' },
     params: { $ref: 'IGetTagParamsDto' },
     response: {
-      200: { $ref: 'ITagDto' },
-      400: ApiValidationErrorJsonSchema,
-      500: ApiErrorJsonSchema,
+      [httpStatusCodes.OK]: { $ref: 'ITagDto' },
+      [httpStatusCodes.BAD_REQUEST]: ApiValidationErrorJsonSchema,
+      [httpStatusCodes.INTERNAL_SERVER_ERROR]: ApiErrorJsonSchema,
     },
   },
 };

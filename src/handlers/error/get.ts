@@ -1,11 +1,12 @@
-import { ConfigContainer } from '#/configs/ConfigContainer';
 import type { IReplyHealthDto } from '#/dto/common/IReplyHealthDto';
+import { CE_DI } from '#/modules/di/CE_DI';
+import { container } from '#/modules/di/container';
 import {
   ApiError,
   ApiErrorJsonSchema,
   ApiValidationErrorJsonSchema,
 } from '@maeum/error-controller';
-import { I18nController, type II18nParameters } from '@maeum/i18n-controller';
+import { CE_DI as I18N_CONTROLLER, type II18nParameters } from '@maeum/i18n-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
 export const option: RouteShorthandOptions = {
@@ -33,7 +34,9 @@ export const option: RouteShorthandOptions = {
 export async function handler(
   req: FastifyRequest<{ Querystring: { ee?: string; code?: string; pe?: string } }>,
 ) {
-  const language = I18nController.it.getLanguageFromRequestHeader(req.headers['accept-language']);
+  const config = container.resolve(CE_DI.CONFIG);
+  const i18n = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+  const language = i18n.getLanguageFromRequestHeader(req.headers['accept-language']);
 
   if (req.query.ee == null) {
     if (req.query.code != null) {
@@ -55,9 +58,9 @@ export async function handler(
   }
 
   return {
-    envMode: ConfigContainer.it.config.server.envMode,
-    runMode: ConfigContainer.it.config.server.runMode,
-    port: ConfigContainer.it.config.server.port,
+    envMode: config.server.envMode,
+    runMode: config.server.runMode,
+    port: config.server.port,
     i18n: { language },
   } satisfies IReplyHealthDto;
 }

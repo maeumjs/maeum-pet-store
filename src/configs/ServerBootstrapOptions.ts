@@ -3,29 +3,40 @@ import routeMap from '#/handlers/route-map';
 import { CronErrorHandler } from '#/modules/error/CronErrorHandler';
 import { TypeORMErrorHandler } from '#/modules/error/TypeORMErrorHandler';
 import type { IErrorControllerOption } from '@maeum/error-controller';
-import { I18nController, pt, ptu, type II18nControllerOption } from '@maeum/i18n-controller';
+import {
+  CE_DI as I18N_CONTROLLER,
+  type II18nContainerOptions,
+  type II18nParameters,
+} from '@maeum/i18n-controller';
 import {
   CE_LOGGING_ACTION_CODE,
-  createConsoleTransport,
-  createFileTransport,
   getRoutePathKey,
-  type IWinstonLoggingControllerOption,
+  makeWinstonConsoleTransport,
+  makeWinstonFileTransport,
+  type IMaeumSyncLoggersWithWinstonOptions,
 } from '@maeum/logging-controller';
 import type { ISchemaControllerBootstrapOption } from '@maeum/schema-controller';
-import { getCwd } from '@maeum/tools';
+import { getCwd, type IClassContainer } from '@maeum/tools';
 import ajvFormat from 'ajv-formats';
 import path from 'node:path';
 import { getRunMode } from './modules/getRunMode';
 
-export const ServerBootstrapOptions = {
-  schema: {
+export function getServerBootstrapOptions(container: IClassContainer) {
+  const runMode = getRunMode(process.env.RUN_MODE);
+
+  const schema: ISchemaControllerBootstrapOption = {
     filePath: path.join(getCwd(process.env), 'resources', 'configs', 'store.json'),
     ajv: {
       options: {
         coerceTypes: 'array',
         keywords: ['collectionFormat', 'example', 'binary'],
         formats: {
-          binary: { type: 'string', validate: () => true },
+          binary: {
+            type: 'string',
+            validate: () => {
+              return true;
+            },
+          },
           byte: { type: 'string', validate: () => true },
           int64: { type: 'number', validate: () => true },
         },
@@ -38,30 +49,47 @@ export const ServerBootstrapOptions = {
       useAjv: true,
       useNative: true,
     },
-  } satisfies ISchemaControllerBootstrapOption,
-  i18n: {
+  };
+
+  const i18n: II18nContainerOptions = {
     localeRoot: path.join(getCwd(process.env), 'resources', 'locales'),
     defaultLanguage: 'en',
-  } satisfies II18nControllerOption,
-  logger: {
+  };
+
+  const defaultLoggerName = 'api';
+  const loggers: IMaeumSyncLoggersWithWinstonOptions = {
     winston: {
       getEnableDebugMessage: () =>
         getRunMode(process.env.RUN_MODE) !== 'production' &&
         getRunMode(process.env.RUN_MODE) !== 'stage',
-      defaultAppName: 'api',
-      loggers: (() => {
-        const runMode = getRunMode(process.env.RUN_MODE);
+      defaultAppName: defaultLoggerName,
+      options: (() => {
         switch (runMode) {
           case CE_RUN_MODE.DEVELOP:
           case CE_RUN_MODE.QA:
-            return { api: { getOptions: () => ({ transports: [createConsoleTransport()] }) } };
+            return new Map([
+              [
+                defaultLoggerName,
+                { getOptions: () => ({ transports: [makeWinstonConsoleTransport()] }) },
+              ],
+            ]);
           // production
           case CE_RUN_MODE.STAGE:
           case CE_RUN_MODE.PRODUCTION:
-            return { api: { getOptions: () => ({ transports: [createConsoleTransport()] }) } };
+            return new Map([
+              [
+                defaultLoggerName,
+                { getOptions: () => ({ transports: [makeWinstonFileTransport()] }) },
+              ],
+            ]);
           // local
           default:
-            return { api: { getOptions: () => ({ transports: [createFileTransport()] }) } };
+            return new Map([
+              [
+                defaultLoggerName,
+                { getOptions: () => ({ transports: [makeWinstonFileTransport()] }) },
+              ],
+            ]);
         }
       })(),
     },
@@ -95,10 +123,10 @@ export const ServerBootstrapOptions = {
         ],
       },
     },
-  } satisfies IWinstonLoggingControllerOption,
-  errors: {
+  };
+
+  const errors: IErrorControllerOption = {
     encryption: (() => {
-      const runMode = getRunMode(process.env.RUN_MODE);
       switch (runMode) {
         case CE_RUN_MODE.DEVELOP:
         case CE_RUN_MODE.QA:
@@ -112,23 +140,59 @@ export const ServerBootstrapOptions = {
           return false;
       }
     })(),
-    translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
-    fallbackMessage: () => pt('en', 'common.main.error'),
+    translate: (language, option) => {
+      const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+      return i18nContainer.ptu(
+        { headers: { 'accept-language': language } },
+        option as II18nParameters,
+      );
+    },
+    fallbackMessage: () => {
+      const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+      return i18nContainer.pt('en', 'common.main.error');
+    },
     includeDefaultHandler: true,
     handlers: [
-      new TypeORMErrorHandler({
+      new TypeORMErrorHandler(container, {
         encryption: true,
-        getLanguage: (args) =>
-          I18nController.it.getLanguageFromRequestHeader(args.req.headers['accept-language']),
-        translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
-        fallbackMessage: () => pt('en', 'common.main.error'),
+        getLanguage: (args) => {
+          const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+          return i18nContainer.getLanguageFromRequestHeader(args.req.headers['accept-language']);
+        },
+        translate: (language, option) => {
+          const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+          return i18nContainer.ptu(
+            { headers: { 'accept-language': language } },
+            option as II18nParameters,
+          );
+        },
+        fallbackMessage: () => {
+          const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+          return i18nContainer.pt('en', 'common.main.error');
+        },
       }),
-      new CronErrorHandler({
+      new CronErrorHandler(container, {
         encryption: true,
         getLanguage: () => 'en',
-        translate: (language, option) => ptu({ headers: { 'accept-language': language } }, option),
-        fallbackMessage: () => pt('en', 'common.main.error'),
+        translate: (language, option) => {
+          const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+          return i18nContainer.ptu(
+            { headers: { 'accept-language': language } },
+            option as II18nParameters,
+          );
+        },
+        fallbackMessage: () => {
+          const i18nContainer = container.resolve(I18N_CONTROLLER.I18N_CONTROLLER);
+          return i18nContainer.pt('en', 'common.main.error');
+        },
       }),
     ],
-  } satisfies IErrorControllerOption,
-};
+  };
+
+  return {
+    schema,
+    i18n,
+    loggers,
+    errors,
+  };
+}
