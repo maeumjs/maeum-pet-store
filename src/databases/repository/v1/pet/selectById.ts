@@ -8,7 +8,7 @@ import { selectByPetId as selectTagMtMByPetId } from '#/databases/repository/v1/
 import { selectByIds as selectTagByIds } from '#/databases/repository/v1/tags/selectByIds';
 import { CE_DI } from '#/modules/di/CE_DI';
 import { container } from '#/modules/di/container';
-import { getAsyncTid } from '#/modules/logging/store/getAsyncTid';
+import { getAsyncTid } from '#/modules/loggings/stores/getAsyncTid';
 
 export async function selectById(
   data: { id: IPetEntity['id'] },

@@ -4,7 +4,7 @@ import type { IPetEntity } from '#/databases/interfaces/IPetEntity';
 import { where } from '#/databases/modules/where';
 import { CE_DI } from '#/modules/di/CE_DI';
 import { container } from '#/modules/di/container';
-import { getAsyncTid } from '#/modules/logging/store/getAsyncTid';
+import { getAsyncTid } from '#/modules/loggings/stores/getAsyncTid';
 
 export async function selectByPetId(
   data: { petId: IPetEntity['id'] },

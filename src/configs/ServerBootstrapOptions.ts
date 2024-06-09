@@ -1,7 +1,7 @@
 import { CE_RUN_MODE } from '#/configs/const-enum/CE_RUN_MODE';
 import routeMap from '#/handlers/route-map';
-import { CronErrorHandler } from '#/modules/error/CronErrorHandler';
-import { TypeORMErrorHandler } from '#/modules/error/TypeORMErrorHandler';
+import { CronErrorHandler } from '#/modules/errors/CronErrorHandler';
+import { TypeORMErrorHandler } from '#/modules/errors/TypeORMErrorHandler';
 import type { IErrorControllerOption } from '@maeum/error-controller';
 import {
   CE_DI as I18N_CONTROLLER,

@@ -1,4 +1,4 @@
-import { getAsyncStore } from '#/modules/logging/store/getAsyncStore';
+import { getAsyncStore } from '#/modules/loggings/stores/getAsyncStore';
 import { ApiError } from '@maeum/error-controller';
 import type { II18nParameters } from '@maeum/i18n-controller';
 import httpStatusCodes from 'http-status-codes';

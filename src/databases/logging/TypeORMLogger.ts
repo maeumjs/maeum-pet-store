@@ -2,8 +2,8 @@
 
 import { getEvaluateQuery } from '#/databases/logging/getEvaluateQuery';
 import { container } from '#/modules/di/container';
-import { CE_LOG_ID } from '#/modules/logging/const-enum/CE_LOG_ID';
-import { getAsyncTid } from '#/modules/logging/store/getAsyncTid';
+import { CE_LOG_ID } from '#/modules/loggings/const-enum/CE_LOG_ID';
+import { getAsyncTid } from '#/modules/loggings/stores/getAsyncTid';
 import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
 import httpStatusCodes from 'http-status-codes';
 import { isError, isFalse } from 'my-easy-fp';
