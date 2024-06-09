@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { CronError } from '#/cron/CronError';
+import { CronError } from '#/crons/CronError';
 import { container } from '#/modules/di/container';
 import { ErrorHandler, getSourceLocation } from '@maeum/error-controller';
 import { CE_DI as TOOLS, noop, safeStringify } from '@maeum/tools';

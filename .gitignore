@@ -112,3 +112,5 @@ resources/configs/store.json
 src/handlers/route-map.ts
 src/handlers/route.ts
 _test/
+git-short
+git-short.sh

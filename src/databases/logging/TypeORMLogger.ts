@@ -9,7 +9,7 @@ import httpStatusCodes from 'http-status-codes';
 import { isError, isFalse } from 'my-easy-fp';
 import { AbstractLogger, type LogLevel, type LogMessage, type QueryRunner } from 'typeorm';
 
-const log = container.resolve(LOGGING_CONTROLLER.WINSTON_LOGGERS).l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.WINSTON_LOGGERS).l(import.meta.filename);
 
 export class TypeORMLogger extends AbstractLogger {
   protected writeLog(

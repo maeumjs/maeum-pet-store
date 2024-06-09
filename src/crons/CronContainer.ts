@@ -8,7 +8,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
 import { TrackerAsyncResource } from './TrackerAsyncResource';
 
-const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(import.meta.filename);
 
 export class CronContainer {
   #schedule: string;

@@ -97,6 +97,8 @@ module.exports = {
     // ----------------------------------------------------------------------------------------------------------
     'import/prefer-default-export': ['off'],
     'import/no-default-export': ['error'],
+    // eslint-disable-next-line prettier/prettier
+    'import/extensions': ["error", "never", { "js": "always" }],
   },
   overrides: [
     // script

@@ -2,12 +2,12 @@ module.exports = {
   apps: [
     {
       name: 'maeum-boilerplate',
-      script: 'dist/listen.js',
+      script: 'dist/app.js',
       instances: 0,
       watch: false,
       max_memory_restart: '2G',
       autorestart: true,
-      node_args: '--enable-source-maps --no-warnings -r ./dist/loader',
+      node_args: '--enable-source-maps --no-warnings --import ./dist/loader.js',
       exp_backoff_restart_delay: 200,
       wait_ready: true,
       kill_timeout: 6000,

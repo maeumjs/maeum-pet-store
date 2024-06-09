@@ -13,9 +13,9 @@ import { randomUUID } from 'crypto';
 import { differenceInMilliseconds } from 'date-fns';
 import httpStatusCodes from 'http-status-codes';
 import { DataSource } from 'typeorm';
-import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions.js';
 
-const log = container.resolve(LOGGING_CONTROLLER.WINSTON_LOGGERS).l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.WINSTON_LOGGERS).l(import.meta.filename);
 
 export function getPetStoreMysql() {
   const config = container.resolve(CE_DI.CONFIG);

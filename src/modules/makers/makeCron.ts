@@ -1,4 +1,4 @@
-import { CronContainer } from '#/cron/CronContainer';
+import { CronContainer } from '#/crons/CronContainer';
 import { CE_DI } from '#/modules/di/CE_DI';
 import { container } from '#/modules/di/container';
 
