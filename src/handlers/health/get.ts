@@ -7,7 +7,7 @@ import { CE_DI as I18N_CONTROLLER } from '@maeum/i18n-controller';
 import { CE_DI as LOGGING_CONTROLLER } from '@maeum/logging-controller';
 import type { FastifyRequest, RouteShorthandOptions } from 'fastify';
 
-const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(import.meta.filename);
 
 export const option: RouteShorthandOptions = {
   schema: {

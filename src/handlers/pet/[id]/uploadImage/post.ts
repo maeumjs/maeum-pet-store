@@ -26,7 +26,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
 import type { SetOptional } from 'type-fest';
 
-const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(__filename);
+const log = container.resolve(LOGGING_CONTROLLER.MAEUM_LOGGERS).l(import.meta.filename);
 
 export const option: RouteShorthandOptions<
   RawServerBase,

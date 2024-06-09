@@ -9,7 +9,7 @@ export function listen() {
   const server = container.resolve(CE_DI.SERVER);
   const port = getPort();
   const winston = container.resolve<WinstonLoggers>(LOGGING_CONTROLLER.WINSTON_LOGGERS);
-  const log = winston.l(__filename);
+  const log = winston.l(import.meta.filename);
 
   server.listen({ port, host: '0.0.0.0' }, (err, address) => {
     if (process.env.ENV_CREATE_SWAGGER_DOC_FILE === 'true') {

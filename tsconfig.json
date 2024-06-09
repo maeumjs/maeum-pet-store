@@ -1,11 +1,15 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
   "ts-node": {
+    "esm": true,
     "transpileOnly": true,
     "files": true,
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
     "incremental": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -33,8 +37,13 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*.ts", "scripts/**/*.ts"],
-  "exclude": [".eslintrc.cjs", "jest.config.js"]
+  "exclude": [".eslintrc.cjs", "jest.config.js"],
+  "tsc-alias": {
+    "verbose": true
+  }
 }
