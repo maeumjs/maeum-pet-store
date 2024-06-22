@@ -30,6 +30,6 @@ export async function handler(
     },
   });
 
-  const pet = await selectById({ id: result.id });
+  const pet = await selectById({ id: result.id }, { master: true });
   return pet;
 }
