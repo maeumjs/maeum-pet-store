@@ -1,6 +1,6 @@
-import type { executionAsyncId } from 'async_hooks';
-import type { randomUUID } from 'crypto';
-import type { IncomingHttpHeaders } from 'http';
+import type { executionAsyncId } from 'node:async_hooks';
+import type { randomUUID } from 'node:crypto';
+import type { IncomingHttpHeaders } from 'node:http';
 
 export interface IAsyncStore {
   tid: ReturnType<typeof randomUUID>;

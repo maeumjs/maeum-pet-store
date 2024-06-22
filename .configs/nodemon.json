@@ -7,7 +7,7 @@
     "resources/locales/**/*.json",
     "!src/dto/**/*.ts"
   ],
-  "exec": "ts-node -r tsconfig-paths/register --files --project tsconfig.json -r src/loader src/app.ts",
+  "exec": "tsx --tsconfig tsconfig.json --import src/loader.ts src/app.ts",
   "ext": "ts json env",
   "ignore": [
     "*.test.ts"

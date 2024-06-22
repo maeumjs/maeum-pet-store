@@ -4,9 +4,9 @@ import { makeConfig } from '#/modules/makers/makeConfig';
 import { makeDotEnv } from '#/modules/makers/makeDotEnv';
 import { makePackageJson } from '#/modules/makers/makePackageJson';
 import { makeErrorController } from '@maeum/error-controller';
-import { makeSyncI18nContainer } from '@maeum/i18n-controller';
+import { makeAsyncI18nContainer } from '@maeum/i18n-controller';
 import { makeSyncLoggers } from '@maeum/logging-controller';
-import { makeSyncSchemaController } from '@maeum/schema-controller';
+import { makeAsyncSchemaController } from '@maeum/schema-controller';
 import { makeEncryptioner } from '@maeum/tools';
 
 /**
@@ -17,9 +17,9 @@ import { makeEncryptioner } from '@maeum/tools';
  */
 /* 01 */ makeDotEnv();
 const options = getServerBootstrapOptions(container);
-/* 02 */ makeSyncSchemaController(container, options.schema);
-/* 03 */ makeConfig();
-/* 04 */ makeSyncI18nContainer(container, options.i18n);
+/* 02 */ await makeAsyncSchemaController(container, options.schema);
+/* 03 */ await makeConfig();
+/* 04 */ await makeAsyncI18nContainer(container, options.i18n);
 /* 05 */ makeSyncLoggers(container, 'winston', options.loggers);
 /* 06 */ makeErrorController(container, options.errors);
 /* 07 */ makeEncryptioner(container, { key: process.env.ENV_ENCRYPTION_KEY });

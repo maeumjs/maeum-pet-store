@@ -232,14 +232,17 @@ importers:
         specifier: ^5.0.7
         version: 5.0.7
       schema-nozzle:
-        specifier: ^0.25.0
-        version: 0.25.0(ajv@8.16.0)
+        specifier: ^0.26.0
+        version: 0.26.0(ajv@8.16.0)(ts-json-schema-generator@2.3.0)
       shelljs:
         specifier: ^0.8.5
         version: 0.8.5
       ts-jest:
         specifier: ^29.1.4
         version: 29.1.4(@babel/core@7.24.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.7))(esbuild@0.21.4)(jest@29.7.0(@types/node@20.14.2)(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5)))(typescript@5.4.5)
+      ts-json-schema-generator:
+        specifier: ^2.3.0
+        version: 2.3.0
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.14.2)(typescript@5.4.5)
@@ -249,6 +252,9 @@ importers:
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
+      tsx:
+        specifier: ^4.15.1
+        version: 4.15.1
       typescript:
         specifier: ^5.4.2
         version: 5.4.5
@@ -2097,6 +2103,10 @@ packages:
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
 
+  dot-prop@5.3.0:
+    resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
+    engines: {node: '>=8'}
+
   dot-prop@6.0.1:
     resolution: {integrity: sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==}
     engines: {node: '>=10'}
@@ -2658,11 +2668,6 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
-
-  glob@8.1.0:
-    resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
-    engines: {node: '>=12'}
     deprecated: Glob versions prior to v9 are no longer supported
 
   globals@11.12.0:
@@ -4214,12 +4219,13 @@ packages:
   sax@1.4.1:
     resolution: {integrity: sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==}
 
-  schema-nozzle@0.25.0:
-    resolution: {integrity: sha512-iPjbVl3o4jhKtf5SykCR4zG5nw/UAhwAPa1gNxko9MgGlzON+yTgOQ8IId5ZW/abbgQ7vanXE76QNvKJe0aN3A==}
+  schema-nozzle@0.26.0:
+    resolution: {integrity: sha512-fxJCGK55cYYMEpoitrT5UCZSirH1CDc9FQWNXKmlhHXL4+lKuTDk3/KxebwRykpExeCojEYVSgGBQnY5OLrr6A==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
-      ajv: ^8.12.0
+      ajv: ^8.0.0
+      ts-json-schema-generator: ^2.0.0
 
   secure-json-parse@2.7.0:
     resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
@@ -4662,9 +4668,9 @@ packages:
       esbuild:
         optional: true
 
-  ts-json-schema-generator@1.5.1:
-    resolution: {integrity: sha512-apX5qG2+NA66j7b4AJm8q/DpdTeOsjfh7A3LpKsUiil0FepkNwtN28zYgjrsiiya2/OPhsr/PSjX5FUYg79rCg==}
-    engines: {node: '>=10.0.0'}
+  ts-json-schema-generator@2.3.0:
+    resolution: {integrity: sha512-t4lBQAwZc0sOJq9LJt3NgbznIcslVnm0JeEMFq8qIRklpMRY8jlYD0YmnRWbqBKANxkby91P1XanSSlSOFpUmg==}
+    engines: {node: '>=18.0.0'}
     hasBin: true
 
   ts-morph-short@0.9.1:
@@ -4691,6 +4697,9 @@ packages:
       '@swc/wasm':
         optional: true
 
+  ts-pattern@5.1.2:
+    resolution: {integrity: sha512-u+ElKUIWnqisjpRBhv6Y89yNq7Pmz6xL0v7pTSckrVZ0+5Vf32oh/3jmxWl80rAOGcnbBa7fCyeqNdP4yXzWWg==}
+
   tsc-alias@1.8.10:
     resolution: {integrity: sha512-Ibv4KAWfFkFdKJxnWfVtdOmB0Zi1RJVxcbPGiCDsFpCQSsmpWyuzHG3rQyI5YkobWwxFPEyQfu1hdo4qLG2zPw==}
     hasBin: true
@@ -4702,11 +4711,19 @@ packages:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
 
+  tsimportlib@0.0.5:
+    resolution: {integrity: sha512-qWQv/C3YB4Pwj77Z2HlORfy5EsWHcSYt66VQlMM0xZiKXwtoe1SxfpzmHX62sdJgzU6esrBGtyRIlx6O2OFPrQ==}
+
   tslib@1.9.3:
     resolution: {integrity: sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==}
 
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
+
+  tsx@4.15.1:
+    resolution: {integrity: sha512-k/6h17jA1KfUR7SpcteOa880zGmF56s8gMIcSqUR5avyNFi9nlCEKpMiHLrzrqyARGr52A/JablmGey1DEWbCA==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   tv4@1.3.0:
     resolution: {integrity: sha512-afizzfpJgvPr+eDkREK4MxJ/+r8nEEHcmitwgnPUqpaP+FpwQyadnxNoSACbgc/b1LsZYtODGoPiFxQrgJgjvw==}
@@ -7204,6 +7221,10 @@ snapshots:
       no-case: 3.0.4
       tslib: 2.6.3
 
+  dot-prop@5.3.0:
+    dependencies:
+      is-obj: 2.0.0
+
   dot-prop@6.0.1:
     dependencies:
       is-obj: 2.0.0
@@ -7994,14 +8015,6 @@ snapshots:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
-
-  glob@8.1.0:
-    dependencies:
-      fs.realpath: 1.0.0
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 5.1.6
-      once: 1.4.0
 
   globals@11.12.0: {}
 
@@ -9930,15 +9943,18 @@ snapshots:
 
   sax@1.4.1: {}
 
-  schema-nozzle@0.25.0(ajv@8.16.0):
+  schema-nozzle@0.26.0(ajv@8.16.0)(ts-json-schema-generator@2.3.0):
     dependencies:
       '@maeum/cli-logo': 1.0.0
       ajv: 8.16.0
+      alasql: 4.4.0
+      awilix: 10.0.2
       chalk: 4.1.2
       cli-progress: 3.12.0
       comment-parser: 1.4.1
       consola: 3.2.3
       deepmerge: 4.3.1
+      dot-prop: 5.3.0
       fast-copy: 2.1.7
       fast-safe-stringify: 2.1.1
       figlet: 1.7.0
@@ -9958,13 +9974,18 @@ snapshots:
       my-only-either: 1.3.0
       object-traversal: 1.0.1
       ora: 5.4.1
+      pathe: 1.1.2
       prettier: 3.3.1
-      ts-json-schema-generator: 1.5.1
+      ts-json-schema-generator: 2.3.0
       ts-morph: 22.0.0
       ts-morph-short: 0.9.1
+      ts-pattern: 5.1.2
+      tsimportlib: 0.0.5
       tslib: 2.6.3
       type-fest: 4.20.0
       yargs: 17.7.2
+    transitivePeerDependencies:
+      - encoding
 
   secure-json-parse@2.7.0: {}
 
@@ -10401,14 +10422,15 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.24.7)
       esbuild: 0.21.4
 
-  ts-json-schema-generator@1.5.1:
+  ts-json-schema-generator@2.3.0:
     dependencies:
       '@types/json-schema': 7.0.15
       commander: 12.1.0
-      glob: 8.1.0
+      glob: 10.4.1
       json5: 2.2.3
       normalize-path: 3.0.0
       safe-stable-stringify: 2.4.3
+      tslib: 2.6.3
       typescript: 5.4.5
 
   ts-morph-short@0.9.1:
@@ -10445,6 +10467,8 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
+  ts-pattern@5.1.2: {}
+
   tsc-alias@1.8.10:
     dependencies:
       chokidar: 3.6.0
@@ -10467,9 +10491,18 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
+  tsimportlib@0.0.5: {}
+
   tslib@1.9.3: {}
 
   tslib@2.6.3: {}
+
+  tsx@4.15.1:
+    dependencies:
+      esbuild: 0.21.4
+      get-tsconfig: 4.7.5
+    optionalDependencies:
+      fsevents: 2.3.3
 
   tv4@1.3.0: {}
 

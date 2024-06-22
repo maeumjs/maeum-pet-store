@@ -37,7 +37,8 @@ await esbuild.build({
           if (
             pkg.dependencies[args.path] == null && 
             args.importer != null && 
-            !builtinModules.includes(args.path.replace('node:', ''))
+            !builtinModules.includes(args.path.replace('node:', '')) &&
+            !args.path.endsWith('.js')
           ) {
             return { path: `${args.path}.js`, external: true };
           } else if (args.importer != null) {

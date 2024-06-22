@@ -14,7 +14,7 @@ import fastifySwaggerUI from '@fastify/swagger-ui';
 import fastifyUrlData from '@fastify/url-data';
 import { getFastifyHandler } from '@maeum/error-controller';
 import { CE_DI as LOGGING_CONTROLLER, type RequestLogger } from '@maeum/logging-controller';
-import { AsyncResource, executionAsyncId } from 'async_hooks';
+import { AsyncResource, executionAsyncId } from 'node:async_hooks';
 
 export async function makeServer() {
   const config = container.resolve(CE_DI.CONFIG);
